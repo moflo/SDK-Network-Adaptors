@@ -17,7 +17,8 @@
     if(self)
     {
         sdk = appLovinSdk;
-        adView = [[ALAdView alloc] initBannerAd];
+        
+        adView = [[ALAdView alloc] initBannerAdWithSdk:sdk];
         [adView setAdDisplayDelegate:self];
     }
     return self;
@@ -25,7 +26,6 @@
 
 -(void) loadBannerInBackground
 {
-    NSLog(@">>>>>>>>> Asked to reload zone");
     [[sdk adService] loadNextAd:[ALAdSize sizeBanner] placedAt:@"BurstlyApplovinBannerAdaptor" andNotify:self];
 }
 
@@ -39,7 +39,6 @@
 {
     [adView render:ad];
     [delegate banner:self didLoadAd: adView];
-    NSLog(@">>>>>>>>>>> Ad loaded - %@", [ad destinationUrl]);
 }
 
 -(void)adService:(ALAdService *)adService didFailToLoadAdWithError:(int)code

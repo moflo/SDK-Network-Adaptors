@@ -13,6 +13,7 @@
 #import "ALInterstitialAd.h"
 
 @interface BurstlyApplovinInterstitialAdaptor : NSObject <BurstlyAdInterstitialProtocol, ALAdLoadDelegate, ALAdDisplayDelegate>
+
 @property (strong, nonatomic) ALSdk* sdk;
 @property (strong, nonatomic) ALInterstitialAd* interstitialObject;
 @property (strong, nonatomic) ALAd* lastAd;

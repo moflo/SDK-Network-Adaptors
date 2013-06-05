@@ -9,7 +9,7 @@
 #import "BurstlyApplovinAdaptor.h"
 
 @implementation BurstlyApplovinAdaptor
-@synthesize sdk = _sdk;
+@synthesize sdk;
 
 - (id)initAdNetworkWithParams: (NSDictionary*)params
 {
@@ -29,7 +29,7 @@
         ALSdkSettings* settings = [[ALSdkSettings alloc] init];
         [settings setIsVerboseLogging: YES];
         
-        _sdk = [ALSdk sharedWithKey:sdkKey settings:settings];
+        self.sdk = [ALSdk sharedWithKey:sdkKey settings:settings];
     }
     return self;
 }
@@ -48,27 +48,22 @@
 }
 
 - (BurstlyAdPlacementType) adPlacementTypeFor: (NSDictionary *)params {
-/*    if ([[params objectForKey: @"size"] isEqual:@"BANNER"]) {
+  if ([[params objectForKey: @"size"] isEqual:@"BANNER"]) {
         return BurstlyAdPlacementTypeBanner;
     }
     else
     {
         return BurstlyAdPlacementTypeInterstitial;
     }
- */
-    
-    // debug
-    return BurstlyAdPlacementTypeBanner;
 }
 
 - (id<BurstlyAdBannerProtocol>)newBannerAdWithParams: (NSDictionary *)params andError: (NSError **)error
 {
-    NSLog(@">>>>>>>>>>>>>> Asked for Banner adaptor");
-    return [[BurstlyApplovinBannerAdaptor alloc] initWithSdk: _sdk];
+    return [[BurstlyApplovinBannerAdaptor alloc] initWithSdk: sdk];
 }
 
 - (id<BurstlyAdInterstitialProtocol>)newInterstitialAdWithParams: (NSDictionary *)params andError: (NSError **)error
 {
-    return [[BurstlyApplovinInterstitialAdaptor alloc] initWithSdk: _sdk];
+    return [[BurstlyApplovinInterstitialAdaptor alloc] initWithSdk: sdk];
 }
 @end
