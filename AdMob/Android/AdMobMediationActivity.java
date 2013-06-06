@@ -1,12 +1,9 @@
 /**
- * Copyright (c) 2012 AppLovin.
- * 
- * $(license_text)
+ * Copyright (c) 2013 AppLovin.
  */
-package com.applovin.sdkdemo.matt;
+package YOUR_PACKAGE_NAME;
 
 import com.applovin.sdk.AppLovinSdk;
-import com.applovin.sdkdemo.R;
 
 import android.app.Activity;
 import android.os.Bundle;

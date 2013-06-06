@@ -1,4 +1,7 @@
-package com.applovin.sdkdemo.matt;
+/**
+ * Copyright (c) 2013 AppLovin.
+ */
+package YOUR_PACKAGE_NAME;
 
 import android.app.Activity;
 

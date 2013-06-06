@@ -1,11 +1,12 @@
 /**
  * AppLovin Banner SDK Mediation for MoPub
- * 
+ * Copyright (C) 2013 AppLovin. 
+ *
  * @author Matt Szaro
  * @version 1.0
  **/
 
-package com.applovin.sdkdemo.matt;
+package YOUR_PACKAGE_NAME;
 
 import java.util.Map;
 
