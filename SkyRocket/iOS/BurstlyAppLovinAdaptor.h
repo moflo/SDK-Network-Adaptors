@@ -6,6 +6,10 @@
 //
 //
 
+#if !__has_feature(objc_arc)
+#error These adaptors are designed for an ARC-enabled project. If your project does not use ARC, please be sure to use the -fobjc-arc linker flag on these files.
+#endif
+
 #import <Foundation/Foundation.h>
 
 #import "ALSdk.h"
