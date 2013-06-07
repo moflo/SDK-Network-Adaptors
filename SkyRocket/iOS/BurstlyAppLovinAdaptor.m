@@ -14,10 +14,6 @@
 - (id)initAdNetworkWithParams: (NSDictionary*)params
 {
     NSString* key = [params objectForKey:@"AppLovinSdkKey"];
-    
-    if([key isEqualToString:@"publisher_sdk_key"])
-        key = @"FwRy8vJWNE-GNd-zcPGIAGddcQUvm-c0v2z2xGTJVXat9Trmy536Mhlz6DttCTu5Wr7S6gmbCLTLuI6rOAylsg";
-    
     return [self initWithAppLovinSdkKey: key];
 }
 
