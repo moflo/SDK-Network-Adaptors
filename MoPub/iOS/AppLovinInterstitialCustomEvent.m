@@ -2,8 +2,6 @@
 //  AppLovinInterstitialCustomEvent.m
 //  SimpleAds
 //
-//  Created by Basil on 3/5/13.
-//
 //
 
 #import "AppLovinInterstitialCustomEvent.h"
@@ -25,10 +23,22 @@
     if (_loadedAd)
     {
         UIWindow * window = rootViewController.view.window;
+        UIInterfaceOrientation currentOrientation = [[UIDevice currentDevice] orientation];
         
-        _interstitialAd = [[ALInterstitialAd alloc] initWithFrame:window.frame];
+        CGRect localFrame;
+        
+        if(currentOrientation == UIDeviceOrientationPortrait || currentOrientation == UIDeviceOrientationPortraitUpsideDown)
+        {
+            localFrame = CGRectMake(0, 0, window.frame.size.width, window.frame.size.height - [UIApplication sharedApplication].statusBarFrame.size.height);
+        }
+        else
+        {
+            localFrame = CGRectMake(0, 0, window.frame.size.width - [UIApplication sharedApplication].statusBarFrame.size.width, window.frame.size.height);
+        }
+        
+        _interstitialAd = [[ALInterstitialAd alloc] initWithFrame:localFrame];
         _interstitialAd.adDisplayDelegate = self;
-        [_interstitialAd showOver:rootViewController.view.window andRender:_loadedAd];
+        [_interstitialAd showOver:window andRender:_loadedAd];
     }
     else
     {
