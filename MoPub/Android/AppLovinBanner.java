@@ -1,19 +1,17 @@
 /**
  * AppLovin Banner SDK Mediation for MoPub
- * Copyright (C) 2013 AppLovin. 
- *
+ * 
  * @author Matt Szaro
- * @version 1.0
+ * @version 1.1
  **/
 
-package YOUR_PACKAGE_NAME;
+package YOUR_PKG_NAME;
 
 import java.util.Map;
 
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.applovin.adview.AppLovinAdView;
 import com.applovin.sdk.AppLovinAd;
@@ -21,22 +19,22 @@ import com.applovin.sdk.AppLovinAdLoadListener;
 import com.applovin.sdk.AppLovinAdSize;
 import com.applovin.sdk.AppLovinSdk;
 import com.mopub.mobileads.CustomEventBanner;
+import com.mopub.mobileads.MoPubErrorCode;
 
-public class AppLovinBanner extends CustomEventBanner implements
-        AppLovinAdLoadListener
+public class AppLovinBanner extends CustomEventBanner implements AppLovinAdLoadListener
 {
-    private CustomEventBanner.Listener mBannerListener;
+
+    private CustomEventBanner.CustomEventBannerListener mBannerListener;
     private AppLovinAdView ALAdView;
 
     /*
      * Abstract methods from CustomEventBanner
      */
     @Override
-    public void loadAd(Context context,
-            CustomEventBanner.Listener bannerListener,
-            Map<String, Object> localExtras, Map<String, String> serverExtras)
+    public void loadBanner(Context context,
+            CustomEventBanner.CustomEventBannerListener bannerListener,
+            Map localExtras, Map serverExtras)
     {
-        Toast.makeText(context, "Called native AppLovin SDK, not RTB.", Toast.LENGTH_LONG).show();
         mBannerListener = bannerListener;
 
         Activity activity = null;
@@ -46,7 +44,7 @@ public class AppLovinBanner extends CustomEventBanner implements
         }
         else
         {
-            mBannerListener.onAdFailed();
+            mBannerListener.onBannerFailed(MoPubErrorCode.INTERNAL_ERROR);
             return;
         }
 
@@ -66,14 +64,28 @@ public class AppLovinBanner extends CustomEventBanner implements
     @Override
     public void adReceived(AppLovinAd ad)
     {
-        mBannerListener.setAdContentView(ALAdView);
+        mBannerListener.onBannerLoaded(ALAdView);
         Log.d("AppLovinAdapter", "AdView was passed to MoPub.");
-        mBannerListener.onAdLoaded();
     }
 
     @Override
     public void failedToReceiveAd(int errorCode)
     {
-        mBannerListener.onAdFailed();
+        if (errorCode == 202)
+        {
+            mBannerListener.onBannerFailed(MoPubErrorCode.NO_FILL);
+        }
+        else if (errorCode >= 500)
+        {
+            mBannerListener.onBannerFailed(MoPubErrorCode.SERVER_ERROR);
+        }
+        else if (errorCode < 0)
+        {
+            mBannerListener.onBannerFailed(MoPubErrorCode.INTERNAL_ERROR);
+        }
+        else
+        {
+            mBannerListener.onBannerFailed(MoPubErrorCode.UNSPECIFIED);
+        }
     }
 }
