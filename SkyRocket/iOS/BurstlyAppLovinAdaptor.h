@@ -23,5 +23,6 @@
 @property (strong, nonatomic) ALSdk* sdk;
 
 -(id) initWithAppLovinSdkKey: (NSString*) sdkKey;
+- (NSString*) sdkVersion;
 
 @end

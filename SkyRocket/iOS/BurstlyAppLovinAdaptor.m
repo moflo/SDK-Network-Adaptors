@@ -62,4 +62,10 @@
 {
     return [[BurstlyApplovinInterstitialAdaptor alloc] initWithSdk: sdk];
 }
+
+- (NSString*) sdkVersion
+{
+    return [ALSdk version];
+}
+
 @end
