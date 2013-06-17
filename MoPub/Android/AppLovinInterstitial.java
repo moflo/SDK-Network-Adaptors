@@ -43,10 +43,11 @@ public class AppLovinInterstitial extends CustomEventInterstitial
             return;
         }
 
+
+        Log.d( "AppLovinAdapter", "Request received for new interstitial." );
+
         adService = AppLovinSdk.getInstance( context ).getAdService();
         adService.loadNextAd( AppLovinAdSize.INTERSTITIAL, this );
-
-        Log.d( "AppLovinAdapter", "Interstitial loaded." );
     }
 
     @Override

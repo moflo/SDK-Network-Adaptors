@@ -44,7 +44,7 @@ public class AppLovinBanner extends CustomEventBanner implements AppLovinAdLoadL
             return;
         }
 
-        Log.d( "AppLovinAdapter", "Reqeust received for new BANNER." );
+        Log.d( "AppLovinAdapter", "Request received for new BANNER." );
 
         adView = new AppLovinAdView( AppLovinSdk.getInstance( context ), AppLovinAdSize.BANNER, activity );
         adView.setAutoDestroy( false );
