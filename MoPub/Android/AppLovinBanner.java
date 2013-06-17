@@ -2,30 +2,26 @@
  * AppLovin Banner SDK Mediation for MoPub
  * 
  * @author Matt Szaro
- * @version 1.1
+ * @version 1.2
  **/
 
-package YOUR_PKG_NAME;
-
-import java.util.Map;
+package YOUR_PACKAGE_NAME;
 
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
-
 import com.applovin.adview.AppLovinAdView;
-import com.applovin.sdk.AppLovinAd;
-import com.applovin.sdk.AppLovinAdLoadListener;
-import com.applovin.sdk.AppLovinAdSize;
-import com.applovin.sdk.AppLovinSdk;
+import com.applovin.sdk.*;
 import com.mopub.mobileads.CustomEventBanner;
 import com.mopub.mobileads.MoPubErrorCode;
 
-public class AppLovinBanner extends CustomEventBanner implements AppLovinAdLoadListener
+import java.util.Map;
+
+public class AppLovinBanner extends CustomEventBanner implements AppLovinAdLoadListener, AppLovinAdClickListener
 {
 
     private CustomEventBanner.CustomEventBannerListener mBannerListener;
-    private AppLovinAdView ALAdView;
+    private AppLovinAdView                              adView;
 
     /*
      * Abstract methods from CustomEventBanner
@@ -38,54 +34,62 @@ public class AppLovinBanner extends CustomEventBanner implements AppLovinAdLoadL
         mBannerListener = bannerListener;
 
         Activity activity = null;
-        if (context instanceof Activity)
+        if ( context instanceof Activity )
         {
             activity = (Activity) context;
         }
         else
         {
-            mBannerListener.onBannerFailed(MoPubErrorCode.INTERNAL_ERROR);
+            mBannerListener.onBannerFailed( MoPubErrorCode.INTERNAL_ERROR );
             return;
         }
 
-        Log.d("AppLovinAdapter", "Reqeust received for new BANNER.");
+        Log.d( "AppLovinAdapter", "Reqeust received for new BANNER." );
 
-        ALAdView = new AppLovinAdView(AppLovinSdk.getInstance(context), AppLovinAdSize.BANNER, activity);
-        ALAdView.setAdLoadListener(this);
-        ALAdView.loadNextAd();
+        adView = new AppLovinAdView( AppLovinSdk.getInstance( context ), AppLovinAdSize.BANNER, activity );
+        adView.setAutoDestroy( false );
+        adView.setAdLoadListener( this );
+        adView.setAdClickListener( this );
+        adView.loadNextAd();
     }
 
     @Override
     public void onInvalidate()
     {
-        ALAdView.setAdLoadListener(null);
+        adView.destroy();
     }
 
     @Override
     public void adReceived(AppLovinAd ad)
     {
-        mBannerListener.onBannerLoaded(ALAdView);
-        Log.d("AppLovinAdapter", "AdView was passed to MoPub.");
+        mBannerListener.onBannerLoaded( adView );
+        Log.d( "AppLovinAdapter", "AdView was passed to MoPub." );
     }
 
     @Override
     public void failedToReceiveAd(int errorCode)
     {
-        if (errorCode == 202)
+        if ( errorCode == 202 )
         {
-            mBannerListener.onBannerFailed(MoPubErrorCode.NO_FILL);
+            mBannerListener.onBannerFailed( MoPubErrorCode.NO_FILL );
         }
-        else if (errorCode >= 500)
+        else if ( errorCode >= 500 )
         {
-            mBannerListener.onBannerFailed(MoPubErrorCode.SERVER_ERROR);
+            mBannerListener.onBannerFailed( MoPubErrorCode.SERVER_ERROR );
         }
-        else if (errorCode < 0)
+        else if ( errorCode < 0 )
         {
-            mBannerListener.onBannerFailed(MoPubErrorCode.INTERNAL_ERROR);
+            mBannerListener.onBannerFailed( MoPubErrorCode.INTERNAL_ERROR );
         }
         else
         {
-            mBannerListener.onBannerFailed(MoPubErrorCode.UNSPECIFIED);
+            mBannerListener.onBannerFailed( MoPubErrorCode.UNSPECIFIED );
         }
+    }
+
+    @Override
+    public void adClicked(AppLovinAd appLovinAd)
+    {
+        mBannerListener.onLeaveApplication();
     }
 }
