@@ -21,6 +21,7 @@
 
 @interface BurstlyApplovinAdaptor : NSObject <BurstlyAdNetworkAdaptorProtocol>
 @property (strong, nonatomic) ALSdk* sdk;
+@property (strong, nonatomic) NSNumber* bannerRefreshRate;
 
 -(id) initWithAppLovinSdkKey: (NSString*) sdkKey;
 - (NSString*) sdkVersion;

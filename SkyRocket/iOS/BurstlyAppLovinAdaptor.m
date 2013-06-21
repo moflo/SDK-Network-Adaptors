@@ -9,15 +9,9 @@
 #import "BurstlyApplovinAdaptor.h"
 
 @implementation BurstlyApplovinAdaptor
-@synthesize sdk;
+@synthesize sdk, bannerRefreshRate;
 
 - (id)initAdNetworkWithParams: (NSDictionary*)params
-{
-    NSString* key = [params objectForKey:@"AppLovinSdkKey"];
-    return [self initWithAppLovinSdkKey: key];
-}
-
--(id) initWithAppLovinSdkKey:(NSString *)sdkKey
 {
     self = [super init];
     if(self)
@@ -25,25 +19,32 @@
         ALSdkSettings* settings = [[ALSdkSettings alloc] init];
         [settings setIsVerboseLogging: YES];
         
-        self.sdk = [ALSdk sharedWithKey:sdkKey settings:settings];
+        NSString* appLovinSdkKey = [params objectForKey:@"AppLovinSdkKey"];
+        self.sdk = [ALSdk sharedWithKey: appLovinSdkKey settings:settings];
+        
+        NSNumber* bannerRefresh = [params objectForKey:@"BannerRefreshRate"];
+        if (bannerRefresh != nil)
+        {
+            // If you provide a custom refresh rate via Burstly, you must also do so in the AppLovin UI (under Manage Apps).
+            self.bannerRefreshRate = bannerRefresh;
+        }
+        else
+        {
+            // AppLovin default refresh rate is 120 seconds.
+            self.bannerRefreshRate = @120;
+        }
     }
     return self;
 }
 
-- (NSString *)adaptorVersion {
-    return @"1.0.0";
-}
-
-- (NSString *)version {
-    return [ALSdk version];
-}
-
-- (BOOL)isIdiomSupported: (UIUserInterfaceIdiom)idiom {
+- (BOOL)isIdiomSupported: (UIUserInterfaceIdiom)idiom
+{
     // We support both iPhone/iPod Touch and iPad.
     return YES;
 }
 
-- (BurstlyAdPlacementType) adPlacementTypeFor: (NSDictionary *)params {
+- (BurstlyAdPlacementType) adPlacementTypeFor: (NSDictionary *)params
+{
   if ([[params objectForKey: @"size"] isEqual:@"BANNER"]) {
         return BurstlyAdPlacementTypeBanner;
     }
@@ -55,12 +56,22 @@
 
 - (id<BurstlyAdBannerProtocol>)newBannerAdWithParams: (NSDictionary *)params andError: (NSError **)error
 {
-    return [[BurstlyApplovinBannerAdaptor alloc] initWithSdk: sdk];
+    return [[BurstlyApplovinBannerAdaptor alloc] initWithSdk: sdk bannerRefreshRate: bannerRefreshRate];
 }
 
 - (id<BurstlyAdInterstitialProtocol>)newInterstitialAdWithParams: (NSDictionary *)params andError: (NSError **)error
 {
     return [[BurstlyApplovinInterstitialAdaptor alloc] initWithSdk: sdk];
+}
+
+- (NSString *)adaptorVersion
+{
+    return @"1.0.1";
+}
+
+- (NSString *) version
+{
+    return [ALSdk version];
 }
 
 - (NSString*) sdkVersion

@@ -15,8 +15,9 @@
 @interface BurstlyApplovinBannerAdaptor : NSObject <BurstlyAdBannerProtocol, ALAdLoadDelegate, ALAdDisplayDelegate>
 @property (strong, nonatomic) ALSdk* sdk;
 @property (strong, nonatomic) ALAdView* adView;
+@property (strong, nonatomic) NSNumber* bannerRefreshRate;
 
--(id) initWithSdk: (ALSdk*) appLovinSdk;
+-(id) initWithSdk: (ALSdk*) appLovinSdk bannerRefreshRate: (NSNumber*) refreshRate;
 -(void) loadBannerInBackground;
 -(void) cancelBannerLoading;
 

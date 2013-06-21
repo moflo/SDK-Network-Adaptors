@@ -9,14 +9,15 @@
 #import "BurstlyApplovinBannerAdaptor.h"
 
 @implementation BurstlyApplovinBannerAdaptor
-@synthesize delegate, sdk, adView;
+@synthesize delegate, sdk, adView, bannerRefreshRate;
 
--(id) initWithSdk:(ALSdk *)appLovinSdk
+-(id) initWithSdk:(ALSdk *)appLovinSdk bannerRefreshRate: refreshRate
 {
     self = [super init];
     if(self)
     {
         sdk = appLovinSdk;
+        bannerRefreshRate = refreshRate;
         
         adView = [[ALAdView alloc] initBannerAdWithSdk:sdk];
         [adView setAdDisplayDelegate:self];
@@ -26,6 +27,7 @@
 
 -(void) loadBannerInBackground
 {
+    NSLog(@"AppLovin Burstly Adaptor .... Loading banner");
     [[sdk adService] loadNextAd:[ALAdSize sizeBanner] placedAt:@"BurstlyApplovinBannerAdaptor" andNotify:self];
 }
 
@@ -56,10 +58,17 @@
 
 -(void)ad:(ALAd *)ad wasDisplayedIn:(UIView *)view
 {
+    // Queue next ad load
+    [self queueNextAdLoad];
 }
 
 -(void)ad:(ALAd *)ad wasHiddenIn:(UIView *)view
 {
+}
+
+-(void) queueNextAdLoad
+{
+    [self performSelector:@selector(loadBannerInBackground) withObject:nil afterDelay: [bannerRefreshRate floatValue]];
 }
 
 @end
