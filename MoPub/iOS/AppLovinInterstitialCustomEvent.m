@@ -23,15 +23,15 @@
     if (_loadedAd)
     {
         UIWindow * window = rootViewController.view.window;
-        UIInterfaceOrientation currentOrientation = [[UIDevice currentDevice] orientation];
+        UIInterfaceOrientation currentOrientation = [[UIApplication sharedApplication] statusBarOrientation];
         
         CGRect localFrame;
         
-        if(currentOrientation == UIDeviceOrientationPortrait || currentOrientation == UIDeviceOrientationPortraitUpsideDown || currentOrientation == UIDeviceOrientationFaceUp || currentOrientation == UIDeviceOrientationFaceDown)
+        if(currentOrientation == UIDeviceOrientationPortrait || currentOrientation == UIDeviceOrientationPortraitUpsideDown)
         {
             localFrame = CGRectMake(0, 0, window.frame.size.width, window.frame.size.height - [UIApplication sharedApplication].statusBarFrame.size.height);
         }
-        else
+        else // Landscape
         {
             localFrame = CGRectMake(0, 0, window.frame.size.width - [UIApplication sharedApplication].statusBarFrame.size.width, window.frame.size.height);
         }
@@ -83,7 +83,7 @@
 
 -(void)ad:(ALAd *)ad wasDisplayedIn:(UIView *)view
 {
-    NSLog(@"AppLovin interstitial was displayed");
+    NSLog(@"AppLovin interstitial was displayed");    
 }
 
 -(void)ad:(ALAd *)ad wasClickedIn:(UIView *)view
@@ -94,7 +94,7 @@
 - (void)dealloc
 {
     _interstitialAd.adDisplayDelegate = nil;
-    
+
     [_interstitialAd release];
     [_loadedAd release];
     
