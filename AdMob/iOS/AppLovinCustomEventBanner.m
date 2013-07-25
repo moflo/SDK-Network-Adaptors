@@ -39,7 +39,12 @@
     [self.delegate customEventBannerWillLeaveApplication:self];
 }
 
--(void) ad:(ALAd *) ad wasHiddenIn:(UIView *)view{}
--(void) ad:(ALAd *) ad wasDisplayedIn:(UIView *)view{}
+-(void) ad:(ALAd *) ad wasHiddenIn:(UIView *)view {
+    // No callback to Google as we don't use modal dialogs
+}
+
+-(void) ad:(ALAd *) ad wasDisplayedIn:(UIView *)view {
+    // No callback to Google as we don't use modal dialogs
+}
 
 @end

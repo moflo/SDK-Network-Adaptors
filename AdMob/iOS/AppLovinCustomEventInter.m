@@ -32,8 +32,17 @@
     [self.delegate customEventInterstitial:self didFailAd:error];
 }
 
--(void) ad:(ALAd *) ad wasClickedIn: (UIView *)view {}
--(void) ad:(ALAd *) ad wasHiddenIn:(UIView *)view{}
--(void) ad:(ALAd *) ad wasDisplayedIn:(UIView *)view{}
+-(void) ad:(ALAd *) ad wasClickedIn: (UIView *)view {
+    [self.delegate customEventInterstitialWillLeaveApplication:self];
+}
+
+-(void) ad:(ALAd *) ad wasHiddenIn:(UIView *)view {
+    [self.delegate customEventInterstitialWillDismiss:self];
+    [self.delegate customEventInterstitialDidDismiss:self];
+}
+
+-(void) ad:(ALAd *) ad wasDisplayedIn:(UIView *)view {
+    [self.delegate customEventInterstitialWillPresent:self];
+}
 
 @end
