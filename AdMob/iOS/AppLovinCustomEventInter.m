@@ -3,7 +3,10 @@
 @implementation AppLovinCustomEventInter;
 
 // Will be set by the AdMob SDK.
-@synthesize delegate = delegate_;
+@synthesize delegate;
+
+// Used internally.
+@synthesize appLovinAd;
 
 #pragma mark -
 #pragma mark GADCustomEventBanner

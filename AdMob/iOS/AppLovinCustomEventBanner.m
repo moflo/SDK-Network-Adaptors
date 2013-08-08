@@ -3,7 +3,10 @@
 @implementation AppLovinCustomEventBanner;
 
 // Will be set by the AdMob SDK.
-@synthesize delegate = delegate_;
+@synthesize delegate;
+
+// Used internally.
+@synthesize adView;
 
 #pragma mark -
 #pragma mark GADCustomEventBanner
@@ -13,19 +16,19 @@
                   label:(NSString *)serverLabel
                 request:(GADCustomEventRequest *)request  {
     
-    if (!applovinAd) {
-        applovinAd = [[ALAdView alloc] initBannerAd];
+    if (!adView) {
+        adView = [[ALAdView alloc] initBannerAd];
     }
     
-    [applovinAd setAdLoadDelegate:self];
-    [applovinAd setAdDisplayDelegate:self];
-    [applovinAd loadNextAd];
+    [adView setAdLoadDelegate:self];
+    [adView setAdDisplayDelegate:self];
+    [adView loadNextAd];
 }
 
 // This method would be called when a new ad was loaded
 -(void)adService:(ALAdService *)adService didLoadAd:(ALAd *)ad {
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        [self.delegate customEventBanner:self didReceiveAd:applovinAd];
+        [self.delegate customEventBanner:self didReceiveAd: adView];
     }];
 }
 
