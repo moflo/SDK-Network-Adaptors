@@ -1,6 +1,5 @@
 //
 //  BurstlyAppLovinInterstitialAdaptor.h
-//  BurstlySampleCL
 //
 //  Created by Matt Szaro on 5/28/13.
 //
