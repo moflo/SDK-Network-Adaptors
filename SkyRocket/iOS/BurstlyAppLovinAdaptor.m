@@ -49,7 +49,7 @@
     
     if ([[requested uppercaseString] isEqualToString:@"BANNER"]) {
         
-        #ifdef DEBUG
+        #if DEBUG
         NSLog(@"AppLovin/Burstly Adaptor: Banner ad was requested.");
         #endif
         
@@ -57,7 +57,7 @@
     }
     else
     {
-        #ifdef DEBUG
+        #if DEBUG
         NSLog(@"AppLovin/Burstly Adaptor: Interstitial ad was requested.");
         #endif
         

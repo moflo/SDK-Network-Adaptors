@@ -27,7 +27,7 @@
 
 - (void)loadInterstitialInBackground
 {
-    #ifdef DEBUG
+    #if DEBUG
     NSLog(@"AppLovin/Burstly Adaptor: Loading interstitial in background.");
     #endif
     
@@ -42,7 +42,7 @@
 
 - (void)presentInterstitial
 {
-    #ifdef DEBUG
+    #if DEBUG
     NSLog(@"AppLovin/Burstly Adaptor: Presenting interstitial.");
     #endif
 

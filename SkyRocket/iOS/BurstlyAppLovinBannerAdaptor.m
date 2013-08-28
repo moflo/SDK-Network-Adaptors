@@ -27,7 +27,7 @@
 
 -(void) loadBannerInBackground
 {
-    #ifdef DEBUG
+    #if DEBUG
     NSLog(@"AppLovin/Burstly Adaptor: Loading banner in background.");
     #endif
     
@@ -42,7 +42,7 @@
 
 -(void)adService:(ALAdService *)adService didLoadAd:(ALAd *)ad
 {
-    #ifdef DEBUG
+    #if DEBUG
     NSLog(@"AppLovin/Burstly Adaptor: Passing rendered ad to Burstly SDK.");
     #endif
     
