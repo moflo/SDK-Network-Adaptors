@@ -45,11 +45,22 @@
 
 - (BurstlyAdPlacementType) adPlacementTypeFor: (NSDictionary *)params
 {
-  if ([[params objectForKey: @"size"] isEqual:@"BANNER"]) {
+    NSString* requested = [params objectForKey: @"size"];
+    
+    if ([[requested uppercaseString] isEqualToString:@"BANNER"]) {
+        
+        #ifdef DEBUG
+        NSLog(@"AppLovin/Burstly Adaptor: Banner ad was requested.");
+        #endif
+        
         return BurstlyAdPlacementTypeBanner;
     }
     else
     {
+        #ifdef DEBUG
+        NSLog(@"AppLovin/Burstly Adaptor: Interstitial ad was requested.");
+        #endif
+        
         return BurstlyAdPlacementTypeInterstitial;
     }
 }
@@ -66,7 +77,7 @@
 
 - (NSString *)adaptorVersion
 {
-    return @"1.0.1";
+    return @"1.0.2";
 }
 
 - (NSString *) version

@@ -27,6 +27,10 @@
 
 - (void)loadInterstitialInBackground
 {
+    #ifdef DEBUG
+    NSLog(@"AppLovin/Burstly Adaptor: Loading interstitial in background.");
+    #endif
+    
     [[self.sdk adService] loadNextAd:[ALAdSize sizeInterstitial] placedAt:@"BurstlyApplovinInterstitialAdaptor" andNotify:self];
 }
 
@@ -38,6 +42,10 @@
 
 - (void)presentInterstitial
 {
+    #ifdef DEBUG
+    NSLog(@"AppLovin/Burstly Adaptor: Presenting interstitial.");
+    #endif
+
     @synchronized(adaptorLock)
     {
         [delegate interstitialWillPresentFullScreen:self];
@@ -70,10 +78,10 @@
 -(void)ad:(ALAd *)ad wasDisplayedIn:(UIView *)view
 {
     /*
-     Please note that this is not a typo by AppLovin Engineering,
-     rather the method provided by the SkyRocket SDK is misspelled.
-     Editing this call to correct their typo will break the adaptor.
-     */
+    Please note that this is not a typo by AppLovin Engineering,
+    rather the method provided by the SkyRocket SDK is misspelled.
+    Editing this call to correct their typo will break the adaptor.
+    */
     
     [delegate interstitialDidPresentFillScreen:self];
 }
