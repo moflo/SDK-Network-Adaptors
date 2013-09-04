@@ -14,7 +14,6 @@
     
     ALAdService * adService = [[ALSdk shared] adService];
     [adService loadNextAd: [ALAdSize sizeInterstitial]
-                 placedAt: nil
                 andNotify: self];
 }
 
