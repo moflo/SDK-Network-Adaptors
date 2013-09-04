@@ -10,8 +10,6 @@
 
 - (void)requestInterstitialWithCustomEventInfo:(NSDictionary *)info
 {
-    NSLog(@"Requesting AppLovin interstitial...");
-    
     ALAdService * adService = [[ALSdk shared] adService];
     [adService loadNextAd: [ALAdSize sizeInterstitial]
                 andNotify: self];
@@ -22,6 +20,7 @@
     if (_loadedAd)
     {
         UIWindow * window = rootViewController.view.window;
+        
         UIInterfaceOrientation currentOrientation = [[UIApplication sharedApplication] statusBarOrientation];
         
         CGRect localFrame;
@@ -41,8 +40,6 @@
     }
     else
     {
-        NSLog(@"Failed to show AppLovin interstitial: no ad loaded");
-        
         [self.delegate interstitialCustomEvent:self didFailToLoadAdWithError:nil];
     }
 }
@@ -51,8 +48,6 @@
 #pragma mark ALAdLoadDelegate methods
 -(void)adService:(ALAdService *)adService didLoadAd:(ALAd *)ad
 {
-    NSLog(@"Successfully loaded AppLovin interstitial.");
-    
     // Release existing ad
     [_loadedAd release];
     
@@ -65,29 +60,27 @@
 
 -(void)adService:(ALAdService *)adService didFailToLoadAdWithError:(int)code
 {
-    NSLog(@"Failed to load AppLovin interstitial: %i", code);
-    
-    [self.delegate interstitialCustomEvent:self didFailToLoadAdWithError:nil];
+        [self.delegate interstitialCustomEvent:self didFailToLoadAdWithError:nil];
 }
 
 
 #pragma mark ALAdDisplayDelegate methods
 -(void)ad:(ALAd *)ad wasHiddenIn:(UIView *)view
 {
-    NSLog(@"AppLovin interstitial was dismissed");
-    
+    [self.delegate interstitialCustomEventWillDisappear: self];
     [self.delegate interstitialCustomEventDidDisappear:self];
 }
 
 
 -(void)ad:(ALAd *)ad wasDisplayedIn:(UIView *)view
 {
-    NSLog(@"AppLovin interstitial was displayed");    
+    [self.delegate interstitialCustomEventWillAppear: self];
+    [self.delegate interstitialCustomEventDidAppear: self];
 }
 
 -(void)ad:(ALAd *)ad wasClickedIn:(UIView *)view
 {
-    NSLog(@"AppLovin interstitial was clicked");
+    [self.delegate interstitialCustomEventWillLeaveApplication: self];
 }
 
 - (void)dealloc
