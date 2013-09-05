@@ -34,8 +34,9 @@
             localFrame = CGRectMake(0, 0, window.frame.size.width - [UIApplication sharedApplication].statusBarFrame.size.width, window.frame.size.height);
         }
         
-        _interstitialAd = [[ALInterstitialAd alloc] initWithFrame:localFrame];
+        _interstitialAd = [ALInterstitialAd shared];
         _interstitialAd.adDisplayDelegate = self;
+        _interstitialAd.frame = localFrame;
         [_interstitialAd showOver:window andRender:_loadedAd];
     }
     else
