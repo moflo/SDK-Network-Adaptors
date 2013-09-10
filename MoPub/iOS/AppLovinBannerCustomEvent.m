@@ -16,8 +16,6 @@
 
 - (void)requestAdWithSize:(CGSize)size customEventInfo:(NSDictionary *)info
 {
-    NSLog(@"Requesting AppLovin banner...");
-
     if (CGSizeEqualToSize(size, MOPUB_BANNER_SIZE)) {
         _applovinBannerView = [[ALAdView alloc] initBannerAd];
         _applovinBannerView.adLoadDelegate = self;
@@ -46,8 +44,6 @@
 
 -(void)adService:(ALAdService *)adService didLoadAd:(ALAd *)ad
 {
-    NSLog(@"Successfully loaded AppLovin banner");
-    
     [self.delegate bannerCustomEvent:self didLoadAd:_applovinBannerView];
 
 }
