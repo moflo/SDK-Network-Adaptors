@@ -31,7 +31,7 @@
     NSLog(@"AppLovin/Burstly Adaptor: Loading interstitial in background.");
     #endif
     
-    [[self.sdk adService] loadNextAd:[ALAdSize sizeInterstitial] placedAt:@"BurstlyApplovinInterstitialAdaptor" andNotify:self];
+    [[self.sdk adService] loadNextAd:[ALAdSize sizeInterstitial] andNotify:self];
 }
 
 - (void)cancelInterstitialLoading

@@ -31,7 +31,7 @@
     NSLog(@"AppLovin/Burstly Adaptor: Loading banner in background.");
     #endif
     
-    [[sdk adService] loadNextAd:[ALAdSize sizeBanner] placedAt:@"BurstlyApplovinBannerAdaptor" andNotify:self];
+    [[sdk adService] loadNextAd:[ALAdSize sizeBanner] andNotify:self];
 }
 
 -(void) cancelBannerLoading
