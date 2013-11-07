@@ -18,7 +18,7 @@
 
 - (void)requestInterstitialAdWithParameter:(NSString *)serverParameter label:(NSString *)serverLabel request:(GADCustomEventRequest *)request
 {
-    [[[ALSdk shared] adService] loadNextAd:[ALAdSize sizeInterstitial] placedAt:@"AdMobMediation" andNotify:self];
+    [[[ALSdk shared] adService] loadNextAd:[ALAdSize sizeInterstitial] andNotify:self];
 }
 
 // This method would be called when a new ad was loaded
