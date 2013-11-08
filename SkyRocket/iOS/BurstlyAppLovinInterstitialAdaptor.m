@@ -77,13 +77,7 @@
 
 -(void)ad:(ALAd *)ad wasDisplayedIn:(UIView *)view
 {
-    /*
-    Please note that this is not a typo by AppLovin Engineering,
-    rather the method provided by the SkyRocket SDK is misspelled.
-    Editing this call to correct their typo will break the adaptor.
-    */
-    
-    [delegate interstitialDidPresentFillScreen:self];
+    [delegate interstitialDidPresentFullScreen:self];
 }
 
 -(void)ad:(ALAd *)ad wasHiddenIn:(UIView *)view
