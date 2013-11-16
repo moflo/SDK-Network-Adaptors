@@ -1,10 +1,12 @@
 //
 //  BurstlyAppLovinInterstitialAdaptor.m
-//  BurstlySampleCL
 //
-//  Created by Matt Szaro on 5/28/13.
+//  Copyright (C) 2013 AppLovin Corporation
 //
-//
+
+#if  ! __has_feature(objc_arc)
+    #error This file must be compiled with ARC. Use the -fobjc-arc flag in the XCode build phases tab.
+#endif
 
 #import "BurstlyApplovinInterstitialAdaptor.h"
 

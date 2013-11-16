@@ -1,3 +1,7 @@
+#if  ! __has_feature(objc_arc)
+    #error This file must be compiled with ARC. Use the -fobjc-arc flag in the XCode build phases tab.
+#endif
+
 #import "AppLovinCustomEventInter.h"
 
 @implementation AppLovinCustomEventInter;

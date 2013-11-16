@@ -1,10 +1,12 @@
 //
 //  AppLovinBannerCustomEvent.m
-//  SimpleAds
-//
-//  Created by Basil on 3/5/13.
+//  Copyright (C) 2013 AppLovin Corporation.
 //
 //
+
+#if   __has_feature(objc_arc)
+    #error This file must be compiled without ARC. Use the -fno-objc-arc flag in the XCode build phases tab.
+#endif
 
 #import "AppLovinBannerCustomEvent.h"
 
