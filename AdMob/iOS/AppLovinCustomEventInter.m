@@ -17,6 +17,7 @@
 
 -(void) presentFromRootViewController:(UIViewController *)rootViewController
 {
+    [[ALInterstitialAd shared] setAdDisplayDelegate: self];
     [[ALInterstitialAd shared] showOver:rootViewController.view.window andRender:appLovinAd];
 }
 
