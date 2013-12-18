@@ -24,6 +24,8 @@ import com.google.ads.mediation.customevent.CustomEventBannerListener;
 public class AdMobMediationBannerEvent implements CustomEventBanner
 {
 
+    private AppLovinAdView adView;
+
     /**
      * This method will be called by AdMob's Mediation through Custom Event
      * mechanism.
@@ -40,7 +42,7 @@ public class AdMobMediationBannerEvent implements CustomEventBanner
 
         // Create AppLovin Ad View
         final AppLovinSdk sdk = AppLovinSdk.getInstance(activity);
-        final AppLovinAdView adView = new AppLovinAdView(sdk, AppLovinAdSize.BANNER, activity);
+        adView = new AppLovinAdView(sdk, AppLovinAdSize.BANNER, activity);
         adView.setAdClickListener(new AppLovinAdClickListener() {
             @Override
             public void adClicked(AppLovinAd arg0)
