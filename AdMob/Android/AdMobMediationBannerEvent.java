@@ -18,11 +18,9 @@ import com.google.ads.mediation.customevent.CustomEventBannerListener;
 
 /**
  * This class must be defined and referenced from AdMob's website for AdMob
- * Mediation
- * 
- * @author David Anderson
- * @since 4.2
+ * Mediation.
  */
+
 public class AdMobMediationBannerEvent implements CustomEventBanner
 {
 
@@ -74,7 +72,6 @@ public class AdMobMediationBannerEvent implements CustomEventBanner
     @Override
     public void destroy()
     {
-        // TODO Auto-generated method stub
-
+        adView.destroy()
     }
 }
