@@ -74,6 +74,6 @@ public class AdMobMediationBannerEvent implements CustomEventBanner
     @Override
     public void destroy()
     {
-        adView.destroy()
+        adView.destroy();
     }
 }
