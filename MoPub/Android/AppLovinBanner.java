@@ -69,7 +69,7 @@ public class AppLovinBanner extends CustomEventBanner implements AppLovinAdLoadL
     @Override
     public void failedToReceiveAd(int errorCode)
     {
-        if ( errorCode == 202 )
+        if ( errorCode == 204 )
         {
             mBannerListener.onBannerFailed( MoPubErrorCode.NO_FILL );
         }

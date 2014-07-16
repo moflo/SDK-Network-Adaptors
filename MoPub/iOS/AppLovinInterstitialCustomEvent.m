@@ -64,7 +64,7 @@
 
 -(void)adService:(ALAdService *)adService didFailToLoadAdWithError:(int)code
 {
-        [self.delegate interstitialCustomEvent:self didFailToLoadAdWithError:nil];
+     [self.delegate interstitialCustomEvent:self didFailToLoadAdWithError:nil];
 }
 
 
@@ -84,6 +84,7 @@
 
 -(void)ad:(ALAd *)ad wasClickedIn:(UIView *)view
 {
+	[self.delegate interstitialCustomEventDidReceiveTapEvent: self];
     [self.delegate interstitialCustomEventWillLeaveApplication: self];
 }
 

@@ -10,24 +10,25 @@ import com.applovin.adview.AppLovinInterstitialAdDialog;
 import com.applovin.sdk.AppLovinAd;
 import com.applovin.sdk.AppLovinAdDisplayListener;
 import com.applovin.sdk.AppLovinAdLoadListener;
+import com.applovin.sdk.AppLovinAdSize;
 import com.applovin.sdk.AppLovinSdk;
 import com.google.ads.mediation.MediationAdRequest;
 import com.google.ads.mediation.customevent.CustomEventInterstitial;
 import com.google.ads.mediation.customevent.CustomEventInterstitialListener;
 
 /**
- * This class must be defined and referenced from AdMob's website for AdMob
- * Mediation
+ * This class must be defined and referenced from AdMob's website for AdMob Mediation
  * 
  * @author David Anderson
  * @since 4.2
  */
 public class AdMobMediationInterEvent implements CustomEventInterstitial
 {
+    private Activity   mActivity;
+    private AppLovinAd lastAd;
 
     /**
-     * This method will be called by AdMob's Mediation through Custom Event
-     * mechanism.
+     * This method will be called by AdMob's Mediation through Custom Event mechanism.
      */
     @Override
     public void requestInterstitialAd(final CustomEventInterstitialListener listener,
@@ -37,9 +38,33 @@ public class AdMobMediationInterEvent implements CustomEventInterstitial
             MediationAdRequest request,
             Object unused)
     {
-        AppLovinInterstitialAdDialog dialog = AppLovinInterstitialAd.create(AppLovinSdk.getInstance(activity), activity);
+        mActivity = activity;
 
-        dialog.setAdDisplayListener(new AppLovinAdDisplayListener() {
+        AppLovinSdk.getInstance( activity ).getAdService().loadNextAd( AppLovinAdSize.INTERSTITIAL, new AppLovinAdLoadListener() {
+            @Override
+            public void adReceived(AppLovinAd ad)
+            {
+                lastAd = ad;
+                listener.onReceivedAd();
+            }
+
+            @Override
+            public void failedToReceiveAd(int errorCode)
+            {
+                listener.onFailedToReceiveAd();
+            }
+        } );
+    }
+
+    @Override
+    public void showInterstitial()
+    {
+        if ( lastAd == null ) return;
+        if ( mActivity == null ) return;
+
+        AppLovinInterstitialAdDialog dialog = AppLovinInterstitialAd.create( AppLovinSdk.getInstance( mActivity ), mActivity );
+
+        dialog.setAdDisplayListener( new AppLovinAdDisplayListener() {
             @Override
             public void adHidden(AppLovinAd ad)
             {
@@ -51,34 +76,15 @@ public class AdMobMediationInterEvent implements CustomEventInterstitial
             {
                 listener.onPresentScreen();
             }
-        });
+        } );
 
-        dialog.setAdLoadListener(new AppLovinAdLoadListener() {
-            @Override
-            public void failedToReceiveAd(int arg0)
-            {
-                listener.onFailedToReceiveAd();
-            }
-
-            @Override
-            public void adReceived(AppLovinAd ad)
-            {
-                listener.onReceivedAd();
-            }
-        });
-
-        dialog.show();
-    }
-
-    @Override
-    public void showInterstitial()
-    {
+        dialog.showAndRender( lastAd );
     }
 
     @Override
     public void destroy()
     {
-        // TODO Auto-generated method stub
-
+        lastAd = null;
+        mActivity = null;
     }
 }
