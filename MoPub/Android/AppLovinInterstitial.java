@@ -115,22 +115,35 @@ public class AppLovinInterstitial extends CustomEventInterstitial
     @Override
     public void failedToReceiveAd(int errorCode)
     {
-        if ( errorCode == 202 )
-        {
-            mInterstitialListener.onInterstitialFailed( MoPubErrorCode.NO_FILL );
-        }
-        else if ( errorCode >= 500 )
-        {
-            mInterstitialListener.onInterstitialFailed( MoPubErrorCode.SERVER_ERROR );
-        }
-        else if ( errorCode < 0 )
-        {
-            mInterstitialListener.onInterstitialFailed( MoPubErrorCode.INTERNAL_ERROR );
-        }
-        else
-        {
-            mInterstitialListener.onInterstitialFailed( MoPubErrorCode.UNSPECIFIED );
-        }
+ 
+        parentActivity.runOnUiThread( new Runnable() {
+            int errorCode = 0;
+            
+            public void run() {
+            
+                if ( errorCode == 202 )
+                {
+                    mInterstitialListener.onInterstitialFailed( MoPubErrorCode.NO_FILL );
+                }
+                else if ( errorCode >= 500 )
+                {
+                    mInterstitialListener.onInterstitialFailed( MoPubErrorCode.SERVER_ERROR );
+                }
+                else if ( errorCode < 0 )
+                {
+                    mInterstitialListener.onInterstitialFailed( MoPubErrorCode.INTERNAL_ERROR );
+                }
+                else
+                {
+                    mInterstitialListener.onInterstitialFailed( MoPubErrorCode.UNSPECIFIED );
+                }
+            }
+            
+            public Runnable Init(int error)
+            {
+                this.errorCode = error;
+                return this;
+            }
+        }.Init(errorCode));
     }
-
 }
