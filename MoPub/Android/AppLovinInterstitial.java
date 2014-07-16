@@ -113,15 +113,11 @@ public class AppLovinInterstitial extends CustomEventInterstitial
     }
 
     @Override
-    public void failedToReceiveAd(int errorCode)
+    public void failedToReceiveAd(final int errorCode)
     {
- 
         parentActivity.runOnUiThread( new Runnable() {
-            int errorCode = 0;
-            
             public void run() {
-            
-                if ( errorCode == 202 )
+                if ( errorCode == 204 )
                 {
                     mInterstitialListener.onInterstitialFailed( MoPubErrorCode.NO_FILL );
                 }
@@ -138,12 +134,5 @@ public class AppLovinInterstitial extends CustomEventInterstitial
                     mInterstitialListener.onInterstitialFailed( MoPubErrorCode.UNSPECIFIED );
                 }
             }
-            
-            public Runnable Init(int error)
-            {
-                this.errorCode = error;
-                return this;
-            }
-        }.Init(errorCode));
-    }
+    });
 }
