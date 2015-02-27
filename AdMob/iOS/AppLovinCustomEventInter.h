@@ -7,11 +7,9 @@
 //  Copyright (c) 2013 AppLovin. All rights reserved.
 //
 
+@import GoogleMobileAds;
+
 #import <UIKit/UIKit.h>
-#import "GADCustomEventInterstitial.h"
-#import "GADCustomEventInterstitialDelegate.h"
-#import "GADInterstitial.h"
-#import "GADInterstitialDelegate.h"
 #import "ALAdService.h"
 #import "ALInterstitialAd.h"
 

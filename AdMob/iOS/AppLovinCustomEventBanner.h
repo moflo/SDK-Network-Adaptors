@@ -7,11 +7,9 @@
 //  Copyright (c) 2013 AppLovin. All rights reserved.
 //
 
+@import GoogleMobileAds;
+
 #import <UIKit/UIKit.h>
-#import "GADCustomEventBanner.h"
-#import "GADCustomEventBannerDelegate.h"
-#import "GADBannerView.h"
-#import "GADBannerViewDelegate.h"
 #import "ALAdService.h"
 #import "ALAdView.h"
 
