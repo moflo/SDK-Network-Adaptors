@@ -26,6 +26,7 @@ public class AdMobMediationInterEvent implements CustomEventInterstitial
 {
     private Activity   mActivity;
     private AppLovinAd lastAd;
+    private CustomEventInterstitialListener mListener;
 
     /**
      * This method will be called by AdMob's Mediation through Custom Event mechanism.
@@ -39,19 +40,20 @@ public class AdMobMediationInterEvent implements CustomEventInterstitial
             Object unused)
     {
         mActivity = activity;
+        mListener = listener;
 
         AppLovinSdk.getInstance( activity ).getAdService().loadNextAd( AppLovinAdSize.INTERSTITIAL, new AppLovinAdLoadListener() {
             @Override
             public void adReceived(AppLovinAd ad)
             {
                 lastAd = ad;
-                listener.onReceivedAd();
+                mListener.onReceivedAd();
             }
 
             @Override
             public void failedToReceiveAd(int errorCode)
             {
-                listener.onFailedToReceiveAd();
+                mListener.onFailedToReceiveAd();
             }
         } );
     }
@@ -61,6 +63,7 @@ public class AdMobMediationInterEvent implements CustomEventInterstitial
     {
         if ( lastAd == null ) return;
         if ( mActivity == null ) return;
+        if ( mListener == null ) return;
 
         AppLovinInterstitialAdDialog dialog = AppLovinInterstitialAd.create( AppLovinSdk.getInstance( mActivity ), mActivity );
 
@@ -68,13 +71,13 @@ public class AdMobMediationInterEvent implements CustomEventInterstitial
             @Override
             public void adHidden(AppLovinAd ad)
             {
-                listener.onDismissScreen();
+                mListener.onDismissScreen();
             }
 
             @Override
             public void adDisplayed(AppLovinAd ad)
             {
-                listener.onPresentScreen();
+                mListener.onPresentScreen();
             }
         } );
 
@@ -86,5 +89,6 @@ public class AdMobMediationInterEvent implements CustomEventInterstitial
     {
         lastAd = null;
         mActivity = null;
+        mListener = null;
     }
 }
