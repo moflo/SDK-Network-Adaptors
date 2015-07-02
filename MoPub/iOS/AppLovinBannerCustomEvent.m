@@ -1,60 +1,62 @@
 //
-//  AppLovinBannerCustomEvent.m
-//  Copyright (C) 2013 AppLovin Corporation.
-//
+// AppLovin <--> MoPub Network Adaptors
 //
 
-#if   __has_feature(objc_arc)
-    #error This file must be compiled without ARC. Use the -fno-objc-arc flag in the XCode build phases tab.
+#if !__has_feature(objc_arc)
+    #error This file must be compiled with ARC. Use the -fobjc-arc flag in the XCode build phases tab.
 #endif
 
 #import "AppLovinBannerCustomEvent.h"
-
+#import "ALAdSize.h"
 #import "MPConstants.h"
 
 @implementation AppLovinBannerCustomEvent
+
+static NSString* const kALMoPubMediationErrorDomain = @"com.applovin.sdk.mediation.mopub.errorDomain";
 
 #pragma mark - MPBannerCustomEvent Subclass Methods
 
 - (void)requestAdWithSize:(CGSize)size customEventInfo:(NSDictionary *)info
 {
     if (CGSizeEqualToSize(size, MOPUB_BANNER_SIZE)) {
-        _applovinBannerView = [[ALAdView alloc] initBannerAd];
-        _applovinBannerView.adLoadDelegate = self;
+        self.bannerView = [[ALAdView alloc] initWithSize: [ALAdSize sizeBanner]];
+        self.bannerView.adLoadDelegate = self;
         
-        [_applovinBannerView loadNextAd];
+        [self.bannerView loadNextAd];
     }
     else
     {
-        NSLog(@"Failed to load AppLovin banner: ad size %@ is not supported.",
-              NSStringFromCGSize(size));
+        NSError* error = [NSError errorWithDomain: kALMoPubMediationErrorDomain
+                                             code: -1
+                                         userInfo: @{
+                                                     NSLocalizedFailureReasonErrorKey : @"An invalid size was requested of this adapter."
+                                                     }
+                          ];
         
-        [self.delegate bannerCustomEvent:self didFailToLoadAdWithError:nil];
+        [self.delegate bannerCustomEvent: self didFailToLoadAdWithError: error];
     }
 }
 
 - (void)dealloc
 {
-    _applovinBannerView.adLoadDelegate = nil;
-    [_applovinBannerView release];
-    
-    [super dealloc];
+    self.bannerView.adLoadDelegate = nil;
 }
 
-#pragma mark -
-#pragma mark ALAdLoadDelegate methods
+#pragma mark - ALAdLoadDelegate methods
 
 -(void)adService:(ALAdService *)adService didLoadAd:(ALAd *)ad
 {
-    [self.delegate bannerCustomEvent:self didLoadAd:_applovinBannerView];
+    [self.delegate bannerCustomEvent:self didLoadAd: self.bannerView];
 
 }
 
 -(void)adService:(ALAdService *)adService didFailToLoadAdWithError:(int)code
 {
-    NSLog(@"Failed to load AppLovin banner: %i", code);
+    NSError* error = [NSError errorWithDomain: kALMoPubMediationErrorDomain
+                                         code: code
+                                     userInfo: nil];
     
-    [self.delegate bannerCustomEvent:self didFailToLoadAdWithError:nil];
+    [self.delegate bannerCustomEvent: self didFailToLoadAdWithError: error];
 }
 
 @end

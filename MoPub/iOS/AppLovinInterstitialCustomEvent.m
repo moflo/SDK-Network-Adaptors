@@ -1,26 +1,26 @@
 //
-//  AppLovinInterstitialCustomEvent.m
-//  Copyright (C) 2013 AppLovin Corporation.
+// AppLovin <--> MoPub Network Adaptors
 //
 
-#if   __has_feature(objc_arc)
-    #error This file must be compiled without ARC. Use the -fno-objc-arc flag in the XCode build phases tab.
+#if !__has_feature(objc_arc)
+#error This file must be compiled with ARC. Use the -fobjc-arc flag in the XCode build phases tab.
 #endif
 
 #import "AppLovinInterstitialCustomEvent.h"
 
 @implementation AppLovinInterstitialCustomEvent
 
+static NSString* const kALMoPubMediationErrorDomain = @"com.applovin.sdk.mediation.mopub.errorDomain";
+
 - (void)requestInterstitialWithCustomEventInfo:(NSDictionary *)info
 {
     ALAdService * adService = [[ALSdk shared] adService];
-    [adService loadNextAd: [ALAdSize sizeInterstitial]
-                andNotify: self];
+    [adService loadNextAd: [ALAdSize sizeInterstitial] andNotify: self];
 }
 
 - (void)showInterstitialFromRootViewController:(UIViewController *)rootViewController
 {
-    if (_loadedAd)
+    if (self.loadedAd)
     {
         UIWindow * window = rootViewController.view.window;
         
@@ -37,42 +37,46 @@
             localFrame = CGRectMake(0, 0, window.frame.size.width - [UIApplication sharedApplication].statusBarFrame.size.width, window.frame.size.height);
         }
         
-        _interstitialAd = [ALInterstitialAd shared];
-        _interstitialAd.adDisplayDelegate = self;
-        _interstitialAd.frame = localFrame;
-        [_interstitialAd showOver:window andRender:_loadedAd];
+        self.interstitialAd = [[ALInterstitialAd alloc] initWithSdk: [ALSdk shared]];
+        self.interstitialAd.adDisplayDelegate = self;
+        self.interstitialAd.frame = localFrame;
+        [self.interstitialAd showOver:window andRender: self.loadedAd];
     }
     else
     {
-        [self.delegate interstitialCustomEvent:self didFailToLoadAdWithError:nil];
+        NSError* error = [NSError errorWithDomain: kALMoPubMediationErrorDomain
+                                             code: -1
+                                         userInfo: @{
+                                                     NSLocalizedFailureReasonErrorKey : @"Adaptor requested to display an interstitial before one was loaded."
+                                                     }
+                          ];
+        
+        [self.delegate interstitialCustomEvent: self didFailToLoadAdWithError: error];
     }
 }
 
-#pragma mark -
-#pragma mark ALAdLoadDelegate methods
+#pragma mark - ALAdLoadDelegate methods
 -(void)adService:(ALAdService *)adService didLoadAd:(ALAd *)ad
 {
-    // Release existing ad
-    [_loadedAd release];
-    
-    // Save the newly loaded ad
-    _loadedAd = ad;
-    [_loadedAd retain];
-    
-    [self.delegate interstitialCustomEvent:self didLoadAd:ad];
+    self.loadedAd = ad;
+    [self.delegate interstitialCustomEvent: self didLoadAd: ad];
 }
 
 -(void)adService:(ALAdService *)adService didFailToLoadAdWithError:(int)code
 {
-     [self.delegate interstitialCustomEvent:self didFailToLoadAdWithError:nil];
+    NSError* error = [NSError errorWithDomain: kALMoPubMediationErrorDomain
+                                         code: code
+                                     userInfo: nil];
+    
+    [self.delegate interstitialCustomEvent: self didFailToLoadAdWithError: error];
 }
 
 
-#pragma mark ALAdDisplayDelegate methods
+#pragma mark - ALAdDisplayDelegate methods
 -(void)ad:(ALAd *)ad wasHiddenIn:(UIView *)view
 {
     [self.delegate interstitialCustomEventWillDisappear: self];
-    [self.delegate interstitialCustomEventDidDisappear:self];
+    [self.delegate interstitialCustomEventDidDisappear: self];
 }
 
 
@@ -84,18 +88,15 @@
 
 -(void)ad:(ALAd *)ad wasClickedIn:(UIView *)view
 {
-	[self.delegate interstitialCustomEventDidReceiveTapEvent: self];
+    [self.delegate interstitialCustomEventDidReceiveTapEvent: self];
     [self.delegate interstitialCustomEventWillLeaveApplication: self];
 }
 
 - (void)dealloc
 {
-    _interstitialAd.adDisplayDelegate = nil;
-
-    [_interstitialAd release];
-    [_loadedAd release];
-    
-	[super dealloc];
+    self.loadedAd = nil;
+    self.interstitialAd = nil;
+    self.interstitialAd.adDisplayDelegate = nil;
 }
 
 @end

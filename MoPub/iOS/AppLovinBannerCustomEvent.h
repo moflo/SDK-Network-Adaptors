@@ -1,18 +1,12 @@
 //
-//  AppLovinBannerCustomEvent.h
-//  SimpleAds
-//
-//  Created by Basil on 3/5/13.
-//
+// AppLovin <--> MoPub Network Adaptors
 //
 
 #import "MPBannerCustomEvent.h"
-
 #import "ALAdView.h"
 
-@interface AppLovinBannerCustomEvent : MPBannerCustomEvent<ALAdLoadDelegate> {
-    ALAdView * _applovinBannerView;
-}
+@interface AppLovinBannerCustomEvent : MPBannerCustomEvent <ALAdLoadDelegate>
 
+@property (strong, nonatomic) ALAdView* bannerView;
 
 @end
