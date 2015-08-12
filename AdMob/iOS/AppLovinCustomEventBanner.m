@@ -21,7 +21,7 @@
                 request:(GADCustomEventRequest *)request  {
     
     if (!adView) {
-        adView = [[ALAdView alloc] initBannerAd];
+        adView = [[ALAdView alloc] initWithSize:[ALAdSize sizeBanner]];
     }
     
     [adView setAdLoadDelegate:self];
