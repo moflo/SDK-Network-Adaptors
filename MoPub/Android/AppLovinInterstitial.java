@@ -134,5 +134,6 @@ public class AppLovinInterstitial extends CustomEventInterstitial
                     mInterstitialListener.onInterstitialFailed( MoPubErrorCode.UNSPECIFIED );
                 }
             }
-    });
+        });
+    }
 }
