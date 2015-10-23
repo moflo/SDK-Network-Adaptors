@@ -17,7 +17,7 @@ import com.mopub.mobileads.MoPubErrorCode;
 
 import java.util.Map;
 
-public class AppLovinInterstitial extends CustomEventInterstitial
+public class AppLovinInterstitialAdapter extends CustomEventInterstitial
         implements AppLovinAdLoadListener
 {
     private CustomEventInterstitial.CustomEventInterstitialListener mInterstitialListener;
@@ -134,5 +134,6 @@ public class AppLovinInterstitial extends CustomEventInterstitial
                     mInterstitialListener.onInterstitialFailed( MoPubErrorCode.UNSPECIFIED );
                 }
             }
-    });
+        });
+    }
 }
