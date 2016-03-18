@@ -64,6 +64,12 @@ static BOOL loggingEnabled = YES;
 - (void)handleCustomEventInvalidated {
 }
 
+- (void) handleAdPlayedForCustomEventNetwork {
+	//	This method has to be implemented as its part of the MPRewardedVideoCustomEvent interface
+	//	Otherwise an exception is thrown and app crashes:
+	//		-[AppLovinRewardedCustomEvent handleAdPlayedForCustomEventNetwork]: unrecognized selector sent to instance 0xxxxxxx
+}
+
 #pragma mark ALAdLoadDelegate methods
 
 - (void)adService:(ALAdService *)adService didFailToLoadAdWithError:(int)code {
