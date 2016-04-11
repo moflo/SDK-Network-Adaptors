@@ -14,6 +14,9 @@ ALAdDisplayDelegate, ALAdVideoPlaybackDelegate>
 @property(nonatomic, weak) id<GADMRewardBasedVideoAdNetworkConnector> connector;
 @end
 
+@implementation GADMExtrasAppLovin
+@end
+
 @implementation GADMAdapterAppLovinRewardBasedVideoAd
 
 + (NSString *)adapterVersion {
