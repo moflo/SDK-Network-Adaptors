@@ -1,6 +1,7 @@
 Rewarded Videos
 ====================
 For rewarded videos integration, add the files GADMAdapterAppLovinRewardBasedVideoAd.h and GADMAdapterAppLovinRewardBasedVideoAd.m into your Xcode project. In the AdMob dashboard, add AppLovin as an ad network.
+
 Note: For some versions of AdMob iOS sdk, you would also need to add the headers from the "Mediation Adapters" into your Xcode project.
 
 Interstitials
