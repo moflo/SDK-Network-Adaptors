@@ -1,6 +1,6 @@
 /**
  * AppLovin Interstitial SDK Mediation for MoPub
- * 
+ *
  * @author Matt Szaro
  * @version 1.2
  **/
@@ -10,7 +10,8 @@ package YOUR_PACKAGE_NAME;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
-import com.applovin.adview.AppLovinAdView;
+import com.applovin.adview.AppLovinInterstitialAd;
+import com.applovin.adview.AppLovinInterstitialAdDialog;
 import com.applovin.sdk.*;
 import com.mopub.mobileads.CustomEventInterstitial;
 import com.mopub.mobileads.MoPubErrorCode;
@@ -22,8 +23,10 @@ public class AppLovinInterstitialAdapter extends CustomEventInterstitial
 {
     private CustomEventInterstitial.CustomEventInterstitialListener mInterstitialListener;
     private Activity                                                parentActivity;
-    private AppLovinAdService                                       adService;
+    private AppLovinSdk                                             sdk;
     private AppLovinAd                                              lastReceived;
+
+    private static final String TAG = "AppLovinAdapter";
 
     /*
      * Abstract methods from CustomEventInterstitial
@@ -43,11 +46,11 @@ public class AppLovinInterstitialAdapter extends CustomEventInterstitial
             return;
         }
 
+        Log.d( TAG, "Request received for new interstitial." );
 
-        Log.d( "AppLovinAdapter", "Request received for new interstitial." );
+        sdk = AppLovinSdk.getInstance( context );
+        sdk.getAdService().loadNextAd( AppLovinAdSize.INTERSTITIAL, this );
 
-        adService = AppLovinSdk.getInstance( context ).getAdService();
-        adService.loadNextAd( AppLovinAdSize.INTERSTITIAL, this );
     }
 
     @Override
@@ -57,14 +60,14 @@ public class AppLovinInterstitialAdapter extends CustomEventInterstitial
 
         if ( adToRender != null )
         {
-            Log.d( "MoPub", "Showing AppLovin interstitial ad..." );
+            Log.d( TAG, "Showing AppLovin interstitial ad..." );
 
             parentActivity.runOnUiThread( new Runnable() {
                 public void run()
                 {
-                    AppLovinAdView adView = new AppLovinAdView( AppLovinAdSize.BANNER, parentActivity );
+                    AppLovinInterstitialAdDialog inter = AppLovinInterstitialAd.create(sdk, parentActivity);
 
-                    adView.setAdClickListener( new AppLovinAdClickListener() {
+                    inter.setAdClickListener( new AppLovinAdClickListener() {
                         @Override
                         public void adClicked(AppLovinAd appLovinAd)
                         {
@@ -72,7 +75,7 @@ public class AppLovinInterstitialAdapter extends CustomEventInterstitial
                         }
                     } );
 
-                    adView.setAdDisplayListener( new AppLovinAdDisplayListener() {
+                    inter.setAdDisplayListener( new AppLovinAdDisplayListener() {
                         @Override
                         public void adDisplayed(AppLovinAd appLovinAd)
                         {
@@ -85,7 +88,7 @@ public class AppLovinInterstitialAdapter extends CustomEventInterstitial
                             mInterstitialListener.onInterstitialDismissed();
                         }
                     } );
-                    adView.renderAd( adToRender );
+                    inter.showAndRender( adToRender );
                 }
             } );
         }
@@ -100,7 +103,7 @@ public class AppLovinInterstitialAdapter extends CustomEventInterstitial
     @Override
     public void adReceived(AppLovinAd ad)
     {
-        Log.d( "MoPub", "AppLovin interstitial loaded successfully." );
+        Log.d( TAG, "AppLovin interstitial loaded successfully." );
 
         lastReceived = ad;
 
