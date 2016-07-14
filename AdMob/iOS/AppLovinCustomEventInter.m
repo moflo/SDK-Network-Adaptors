@@ -30,7 +30,7 @@
 -(void)adService:(ALAdService *)adService didLoadAd:(ALAd *)ad {
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         appLovinAd = ad;
-        [self.delegate customEventInterstitial:self didReceiveAd:appLovinAd];
+        [self.delegate customEventInterstitialDidReceiveAd:self];
     }];
 }
 
