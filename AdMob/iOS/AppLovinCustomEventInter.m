@@ -31,6 +31,11 @@
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         appLovinAd = ad;
         [self.delegate customEventInterstitialDidReceiveAd:self];
+        
+        /**
+         *  For older versions of AdMob use instead:
+         *  [self.delegate customEventInterstitial:self didReceiveAd:appLovinAd];
+         **/
     }];
 }
 
