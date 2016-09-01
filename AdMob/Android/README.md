@@ -8,4 +8,4 @@ For Interstitials integration, add the java file AdMobMediationInterEvent.java i
 
 
 --------------------
-Note: For Unity-Android integration, you can use the applovin-admob-adaptors.jar file. All adaptors are nested under the package name: com.applovin.mediation
+Note: For Unity-Android integration, you can use the applovin-admob-adaptors.jar file from the Unity folder instead of using the open source adapters. 
