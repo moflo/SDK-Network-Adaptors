@@ -4,21 +4,21 @@
 #import "ALIncentivizedInterstitialAd.h"
 #import "GADMRewardBasedVideoAdNetworkConnectorProtocol.h"
 
-static NSString *const kGADMAdapterAppLovinRewardBasedVideoAdKeyErrorDomain =
-@"com.google.GADMAdapterAppLovinRewardBasedVideoAd";
-static BOOL loggingEnabled = NO;
+@interface GADMAdapterAppLovinRewardBasedVideoAd () <ALAdLoadDelegate, ALAdRewardDelegate, ALAdDisplayDelegate, ALAdVideoPlaybackDelegate>
 
-@interface GADMAdapterAppLovinRewardBasedVideoAd () <ALAdLoadDelegate, ALAdRewardDelegate,
-ALAdDisplayDelegate, ALAdVideoPlaybackDelegate>
-@property(nonatomic, strong) GADAdReward *reward;
-@property(nonatomic, weak) id<GADMRewardBasedVideoAdNetworkConnector> connector;
 @property (nonatomic, assign, getter=isFullyWatched) BOOL fullyWatched;
+@property (nonatomic, strong) GADAdReward *reward;
+@property (nonatomic,   weak) id<GADMRewardBasedVideoAdNetworkConnector> connector;
+
 @end
 
 @implementation GADMExtrasAppLovin
 @end
 
 @implementation GADMAdapterAppLovinRewardBasedVideoAd
+
+static const BOOL loggingEnabled = NO;
+static NSString *const kGADMAdapterAppLovinRewardBasedVideoAdKeyErrorDomain = @"com.google.GADMAdapterAppLovinRewardBasedVideoAd";
 
 + (NSString *)adapterVersion {
     return @"1.0.0";
