@@ -57,6 +57,7 @@ public class ApplovinAdapter implements
     private Activity mActivity;
     private static final boolean loggingEnabled = false;
     private ApplovinReward reward;
+    private boolean vidFullyWatched;
 
     @Override
     public void onDestroy() {
@@ -102,11 +103,7 @@ public class ApplovinAdapter implements
     @Override
     public void videoPlaybackEnded(AppLovinAd ad, double percentViewed, boolean fullyWatched) {
         ALLog("Rewarded video playback ended.");
-        if (fullyWatched && reward != null) {
-            ALLog("Granting reward for user.");
-            mMediationRewardedVideoAdListener.onRewarded(this, reward);
-        }
-
+        vidFullyWatched = fullyWatched;
     }
 
     @Override
@@ -148,6 +145,10 @@ public class ApplovinAdapter implements
     @Override
     public void adHidden(AppLovinAd ad) {
         if (mMediationRewardedVideoAdListener != null) {
+            if (vidFullyWatched && reward != null) {
+                ALLog("Granting reward for user.");
+                mMediationRewardedVideoAdListener.onRewarded(this, reward);
+            }
             ALLog("Rewarded video hidden.");
             mMediationRewardedVideoAdListener.onAdClosed(this);
         }
@@ -191,6 +192,7 @@ public class ApplovinAdapter implements
     public void loadAd(MediationAdRequest adRequest, Bundle serverParameters, Bundle networkExtras) {
         if (mMediationRewardedVideoAdListener != null) {
             reward = null;
+            vidFullyWatched = false;
             ALLog("Loading rewarded video.");
             mIncent.preload(this);
         }
