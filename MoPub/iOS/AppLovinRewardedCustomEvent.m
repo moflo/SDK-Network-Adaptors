@@ -1,9 +1,5 @@
 //
-//  AppLovinRewardedCustomEvent.m
-//  MoPub Rewarded Adapter
-//
-//  Created on 10/14/15.
-//  Copyright © 2015 Applovin. All rights reserved.
+// AppLovin <--> MoPub Network Adaptors
 //
 
 #if !__has_feature(objc_arc)
@@ -11,8 +7,10 @@
 #endif
 
 #import "AppLovinRewardedCustomEvent.h"
-#import "ALIncentivizedInterstitialAd.h"
 #import "MPRewardedVideoReward.h"
+
+// Use the below import statements if not integrating our SDK as a first-class framework
+//#import "ALIncentivizedInterstitialAd.h"
 
 static NSString *const kALMoPubMediationErrorDomain =
     @"com.applovin.sdk.mediation.mopub.errorDomain";

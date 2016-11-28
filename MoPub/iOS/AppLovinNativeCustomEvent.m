@@ -7,10 +7,12 @@
 #endif
 
 #import "AppLovinNativeCustomEvent.h"
-#import "ALSdk.h"
 #import "MPNativeCustomEventDelegate.h"
 #import "MPNativeCustomEvent.h"
 #import "MPNativeAdError.h"
+
+// Use the below import statements if not integrating our SDK as a first-class framework
+//#import "ALSdk.h"
 
 @implementation AppLovinNativeCustomEvent
 
