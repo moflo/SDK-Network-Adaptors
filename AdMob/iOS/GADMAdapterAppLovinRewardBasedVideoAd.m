@@ -1,8 +1,11 @@
 #import "GADMAdapterAppLovinRewardBasedVideoAd.h"
-
-#import "ALSdk.h"
-#import "ALIncentivizedInterstitialAd.h"
 #import "GADMRewardBasedVideoAdNetworkConnectorProtocol.h"
+
+@import AppLovinSDK;
+
+// Use the below import statements if not integrating our SDK as a first-class framework
+//#import "ALSdk.h"
+//#import "ALIncentivizedInterstitialAd.h"
 
 @interface GADMAdapterAppLovinRewardBasedVideoAd () <ALAdLoadDelegate, ALAdRewardDelegate, ALAdDisplayDelegate, ALAdVideoPlaybackDelegate>
 

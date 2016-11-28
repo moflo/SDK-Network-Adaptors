@@ -1,19 +1,17 @@
 //
-//  AppLovinRewardedCustomEvent.h
-//  MoPub Rewarded Adapter
-//
-//  Created on 10/14/15.
-//  Copyright © 2015 Applovin. All rights reserved.
+// AppLovin <--> MoPub Network Adaptors
 //
 
 #import "MPRewardedVideoCustomEvent.h"
-#import "ALAdLoadDelegate.h"
-#import "ALAdDisplayDelegate.h"
-#import "ALAdRewardDelegate.h"
-#import "ALAdVideoPlaybackDelegate.h"
 
-@interface AppLovinRewardedCustomEvent
-    : MPRewardedVideoCustomEvent <ALAdLoadDelegate, ALAdDisplayDelegate,
-                                  ALAdRewardDelegate, ALAdVideoPlaybackDelegate>
+#import <AppLovinSDK/AppLovinSDK.h>
+
+// Use the below import statements if not integrating our SDK as a first-class framework
+//#import "ALAdLoadDelegate.h"
+//#import "ALAdDisplayDelegate.h"
+//#import "ALAdRewardDelegate.h"
+//#import "ALAdVideoPlaybackDelegate.h"
+
+@interface AppLovinRewardedCustomEvent : MPRewardedVideoCustomEvent <ALAdLoadDelegate, ALAdDisplayDelegate, ALAdRewardDelegate, ALAdVideoPlaybackDelegate>
 
 @end

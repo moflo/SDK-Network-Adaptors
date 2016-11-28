@@ -8,10 +8,11 @@
 
 #import "AppLovinNativeCustomEvent.h"
 #import "AppLovinNativeAdapter.h"
-#import "ALSdk.h"
+
+// Use the below import statements if not integrating our SDK as a first-class framework
+//#import "ALSdk.h"
 
 @implementation AppLovinNativeAdapter
-
 
 - (id)initWithALNativeAd:(ALNativeAd *)ad {
     

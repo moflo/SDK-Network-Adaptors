@@ -7,5 +7,7 @@
 @end
 
 @interface GADMExtrasAppLovin : NSObject<GADAdNetworkExtras>
+
 @property(nonatomic, assign) NSUInteger requestNumber;
+
 @end
