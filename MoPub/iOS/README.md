@@ -15,7 +15,7 @@ Replace:
 
 With:
 
-import \<AppLovinSDK/AppLovinSDK.h>
+//\#import \<AppLovinSDK/AppLovinSDK.h>
 
 
 2.Uncomment all commented direct header import statements, for example:
