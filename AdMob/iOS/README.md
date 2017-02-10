@@ -31,4 +31,4 @@ Replace:
 
 With:
 
-import "ALInterstitialAd.h"
+#import "ALInterstitialAd.h"
