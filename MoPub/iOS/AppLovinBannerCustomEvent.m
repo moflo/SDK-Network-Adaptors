@@ -45,7 +45,7 @@ static NSString *const kALMoPubMediationErrorDomain = @"com.applovin.sdk.mediati
     }
     else
     {
-        MPLogInfo(@"Failed to create a AppLovin Banner with invalid size");
+        MPLogInfo(@"Failed to create an AppLovin Banner with invalid size");
         
         NSError *error = [NSError errorWithDomain: kALMoPubMediationErrorDomain code: kALErrorCodeUnableToRenderAd userInfo: nil];
         [self.delegate bannerCustomEvent: self didFailToLoadAdWithError: error];
@@ -88,7 +88,6 @@ static NSString *const kALMoPubMediationErrorDomain = @"com.applovin.sdk.mediati
     
     NSError *error = [NSError errorWithDomain: kALMoPubMediationErrorDomain code: code userInfo: nil];
     [self.delegate bannerCustomEvent: self didFailToLoadAdWithError: error];
-    
 }
 
 #pragma mark - Ad Display Delegate
