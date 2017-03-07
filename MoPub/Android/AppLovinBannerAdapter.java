@@ -191,7 +191,7 @@ public class AppLovinBannerAdapter
             final int height = Integer.parseInt( serverExtras.get( AD_HEIGHT_KEY ) );
 
             // We have valid dimensions
-            if ( width >= 0 || height >= 0 )
+            if ( width > 0 && height > 0 )
             {
                 Log.d( TAG, "Valid width (" + width + ") and height (" + height + ") provided" );
 
