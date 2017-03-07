@@ -48,7 +48,7 @@ static NSString *const kALMoPubMediationErrorDomain = @"com.applovin.sdk.mediati
         MPLogInfo(@"Failed to create a AppLovin Banner with invalid size");
         
         NSError *error = [NSError errorWithDomain: kALMoPubMediationErrorDomain code: kALErrorCodeUnableToRenderAd userInfo: nil];
-        [self.delegate bannerCustomEvent: self didFailToLoadAdWithError: error];        
+        [self.delegate bannerCustomEvent: self didFailToLoadAdWithError: error];
     }
 }
 
@@ -80,7 +80,6 @@ static NSString *const kALMoPubMediationErrorDomain = @"com.applovin.sdk.mediati
     [self.adView render: ad overPlacement: self.placement];
     
     [self.delegate bannerCustomEvent: self didLoadAd: self.adView];
-    
 }
 
 - (void)adService:(ALAdService *)adService didFailToLoadAdWithError:(int)code
@@ -100,7 +99,6 @@ static NSString *const kALMoPubMediationErrorDomain = @"com.applovin.sdk.mediati
     
     [self.delegate trackImpression];
     [self.delegate bannerCustomEventWillBeginAction: self];
-    
 }
 
 - (void)ad:(ALAd *)ad wasHiddenIn:(UIView *)view
@@ -108,7 +106,6 @@ static NSString *const kALMoPubMediationErrorDomain = @"com.applovin.sdk.mediati
     MPLogDebug(@"Banner dismissed");
     
     [self.delegate bannerCustomEventDidFinishAction: self];
-    
 }
 
 - (void)ad:(ALAd *)ad wasClickedIn:(UIView *)view
@@ -117,7 +114,6 @@ static NSString *const kALMoPubMediationErrorDomain = @"com.applovin.sdk.mediati
     
     [self.delegate trackClick];
     [self.delegate bannerCustomEventWillLeaveApplication: self];
-    
 }
 
 #pragma mark - Utility Methods
