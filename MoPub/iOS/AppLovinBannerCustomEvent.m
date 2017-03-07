@@ -7,8 +7,6 @@
 //
 
 #import "AppLovinBannerCustomEvent.h"
-#import "MPLogging.h"
-
 #import <AppLovinSDK/AppLovinSDK.h>
 
 // Use the below import statements if not integrating our SDK as a first-class framework
@@ -25,13 +23,14 @@
 
 @implementation AppLovinBannerCustomEvent
 
+static const BOOL kALLoggingEnabled = YES;
 static NSString *const kALMoPubMediationErrorDomain = @"com.applovin.sdk.mediation.mopub.errorDomain";
 
 #pragma mark - MPBannerCustomEvent Overridden Methods
 
 - (void)requestAdWithSize:(CGSize)size customEventInfo:(NSDictionary *)info
 {
-    MPLogInfo(@"Requesting AppLovin banner of size %@ with info: %@", NSStringFromCGSize(size), info);
+    [self log: @"Requesting AppLovin banner of size %@ with info: %@", NSStringFromCGSize(size), info];
     
     // Convert requested size to AppLovin Ad Size
     ALAdSize *adSize = [self appLovinAdSizeFromRequestedSize: size];
@@ -45,7 +44,7 @@ static NSString *const kALMoPubMediationErrorDomain = @"com.applovin.sdk.mediati
     }
     else
     {
-        MPLogInfo(@"Failed to create an AppLovin Banner with invalid size");
+        [self log: @"Failed to create an AppLovin Banner with invalid size"];
         
         NSError *error = [NSError errorWithDomain: kALMoPubMediationErrorDomain code: kALErrorCodeUnableToRenderAd userInfo: nil];
         [self.delegate bannerCustomEvent: self didFailToLoadAdWithError: error];
@@ -69,7 +68,7 @@ static NSString *const kALMoPubMediationErrorDomain = @"com.applovin.sdk.mediati
 
 - (void)adService:(ALAdService *)adService didLoadAd:(ALAd *)ad
 {
-    MPLogDebug(@"Banner did load ad");
+    [self log: @"Banner did load ad"];
     
     self.adView = [[ALAdView alloc] initWithFrame: CGRectMake(0.0f, 0.0f, self.size.width, self.size.height)
                                              size: ad.size
@@ -84,7 +83,7 @@ static NSString *const kALMoPubMediationErrorDomain = @"com.applovin.sdk.mediati
 
 - (void)adService:(ALAdService *)adService didFailToLoadAdWithError:(int)code
 {
-    MPLogDebug(@"Banner failed to load with error: %d", code);
+    [self log: @"Banner failed to load with error: %d", code];
     
     NSError *error = [NSError errorWithDomain: kALMoPubMediationErrorDomain code: code userInfo: nil];
     [self.delegate bannerCustomEvent: self didFailToLoadAdWithError: error];
@@ -94,7 +93,7 @@ static NSString *const kALMoPubMediationErrorDomain = @"com.applovin.sdk.mediati
 
 - (void)ad:(ALAd *)ad wasDisplayedIn:(UIView *)view
 {
-    MPLogDebug(@"Banner displayed");
+    [self log: @"Banner displayed"];
     
     [self.delegate trackImpression];
     [self.delegate bannerCustomEventWillBeginAction: self];
@@ -102,14 +101,14 @@ static NSString *const kALMoPubMediationErrorDomain = @"com.applovin.sdk.mediati
 
 - (void)ad:(ALAd *)ad wasHiddenIn:(UIView *)view
 {
-    MPLogDebug(@"Banner dismissed");
+    [self log: @"Banner dismissed"];
     
     [self.delegate bannerCustomEventDidFinishAction: self];
 }
 
 - (void)ad:(ALAd *)ad wasClickedIn:(UIView *)view
 {
-    MPLogDebug(@"Banner clicked");
+    [self log: @"Banner clicked"];
     
     [self.delegate trackClick];
     [self.delegate bannerCustomEventWillLeaveApplication: self];
@@ -129,6 +128,19 @@ static NSString *const kALMoPubMediationErrorDomain = @"com.applovin.sdk.mediati
     }
     
     return nil;
+}
+
+- (void)log:(NSString *)format, ...
+{
+    if ( kALLoggingEnabled )
+    {
+        va_list valist;
+        va_start(valist, format);
+        NSString *message = [[NSString alloc] initWithFormat: format arguments: valist];
+        va_end(valist);
+        
+        NSLog(@"AppLovinBannerCustomEvent: %@", message);
+    }
 }
 
 @end
