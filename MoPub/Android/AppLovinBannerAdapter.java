@@ -36,11 +36,9 @@ public class AppLovinBannerAdapter
 
     private static final String AD_WIDTH_KEY  = "adWidth";
     private static final String AD_HEIGHT_KEY = "adHeight";
-    private static final String PLACEMENT_KEY = "placement";
 
     private Activity                  mContext;
     private CustomEventBannerListener mListener;
-    private Map<String, String>       mServerExtras;
     private AppLovinAdView            mAdView;
 
     @Override
@@ -57,7 +55,6 @@ public class AppLovinBannerAdapter
         }
 
         mContext = (Activity) context;
-        mServerExtras = serverExtras;
 
         Log.d( TAG, "Requesting AppLovin banner with serverExtras: " + serverExtras );
 
@@ -117,7 +114,7 @@ public class AppLovinBannerAdapter
                     }
                 } );
 
-                mAdView.renderAd( ad, mServerExtras.get( PLACEMENT_KEY ) );
+                mAdView.renderAd( ad );
                 mListener.onBannerLoaded( mAdView );
             }
         } );
@@ -164,7 +161,6 @@ public class AppLovinBannerAdapter
 
             mContext = null;
             mListener = null;
-            mServerExtras = null;
         }
         catch ( Throwable th )
         {

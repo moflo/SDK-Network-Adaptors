@@ -17,7 +17,6 @@
 @property (nonatomic, strong) ALAdView *adView;
 
 @property (nonatomic, assign) CGRect *size;
-@property (nonatomic,   copy) NSString *placement;
 
 @end
 
@@ -37,7 +36,7 @@ static NSString *const kALMoPubMediationErrorDomain = @"com.applovin.sdk.mediati
     if ( adSize )
     {
         self.size = size;
-        self.placement = info[@"placement"];
+        
         
         [[ALSdk shared] setPluginVersion: @"MoPubBanner-1.0"];
         [[ALSdk shared].adService loadNextAd: adSize andNotify: self];
@@ -61,7 +60,6 @@ static NSString *const kALMoPubMediationErrorDomain = @"com.applovin.sdk.mediati
 - (void)dealloc
 {
     self.adView = nil;
-    self.placement = nil;
 }
 
 #pragma mark - AppLovin Ad Load Delegate
@@ -76,7 +74,7 @@ static NSString *const kALMoPubMediationErrorDomain = @"com.applovin.sdk.mediati
     self.adView.adLoadDelegate = self;
     self.adView.adDisplayDelegate = self;
     
-    [self.adView render: ad overPlacement: self.placement];
+    [self.adView render: ad];
     
     [self.delegate bannerCustomEvent: self didLoadAd: self.adView];
 }
