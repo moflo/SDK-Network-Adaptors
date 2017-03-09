@@ -8,6 +8,7 @@
 
 #import "AppLovinBannerCustomEvent.h"
 #import <AppLovinSDK/AppLovinSDK.h>
+#import "MPConstants.h"
 
 // Use the below import statements if not integrating our SDK as a first-class framework
 //#import "ALAdView.h"
@@ -15,8 +16,7 @@
 @interface AppLovinBannerCustomEvent()<ALAdLoadDelegate, ALAdDisplayDelegate>
 
 @property (nonatomic, strong) ALAdView *adView;
-
-@property (nonatomic, assign) CGRect *size;
+@property (nonatomic, assign) CGSize size;
 
 @end
 
@@ -36,7 +36,6 @@ static NSString *const kALMoPubMediationErrorDomain = @"com.applovin.sdk.mediati
     if ( adSize )
     {
         self.size = size;
-        
         
         [[ALSdk shared] setPluginVersion: @"MoPubBanner-1.0"];
         [[ALSdk shared].adService loadNextAd: adSize andNotify: self];
@@ -73,9 +72,8 @@ static NSString *const kALMoPubMediationErrorDomain = @"com.applovin.sdk.mediati
                                               sdk: [ALSdk shared]];
     self.adView.adLoadDelegate = self;
     self.adView.adDisplayDelegate = self;
-    
+
     [self.adView render: ad];
-    
     [self.delegate bannerCustomEvent: self didLoadAd: self.adView];
 }
 
@@ -123,6 +121,10 @@ static NSString *const kALMoPubMediationErrorDomain = @"com.applovin.sdk.mediati
     else if ( CGSizeEqualToSize(size, MOPUB_MEDIUM_RECT_SIZE) )
     {
         return [ALAdSize sizeMRec];
+    }
+    else if ( CGSizeEqualToSize(size, MOPUB_LEADERBOARD_SIZE) )
+    {
+        return [ALAdSize sizeLeader];
     }
     
     return nil;
