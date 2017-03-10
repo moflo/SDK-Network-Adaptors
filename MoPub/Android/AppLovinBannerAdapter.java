@@ -2,8 +2,6 @@ package YOUR_PACKAGE_NAME;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 
 import com.applovin.adview.AppLovinAdView;
@@ -14,7 +12,6 @@ import com.applovin.sdk.AppLovinAdLoadListener;
 import com.applovin.sdk.AppLovinAdSize;
 import com.applovin.sdk.AppLovinErrorCodes;
 import com.applovin.sdk.AppLovinSdk;
-import com.mopub.common.util.Views;
 import com.mopub.mobileads.CustomEventBanner;
 import com.mopub.mobileads.MoPubErrorCode;
 
@@ -30,31 +27,22 @@ import java.util.Map;
 
 public class AppLovinBannerAdapter
         extends CustomEventBanner
-        implements AppLovinAdLoadListener
 {
     private static final String TAG = "AppLovinBannerAdapter";
 
     private static final String AD_WIDTH_KEY  = "adWidth";
     private static final String AD_HEIGHT_KEY = "adHeight";
 
-    private Activity                  mContext;
-    private CustomEventBannerListener mListener;
-    private AppLovinAdView            mAdView;
-
     @Override
     protected void loadBanner(final Context context, final CustomEventBannerListener customEventBannerListener, final Map<String, Object> localExtras, final Map<String, String> serverExtras)
     {
-        mListener = customEventBannerListener;
-
         // Input check
         if ( !( context instanceof Activity ) )
         {
             Log.e( TAG, "Unable to request AppLovin banner. Invalid context provided." );
-            handleBannerFailure( MoPubErrorCode.ADAPTER_CONFIGURATION_ERROR );
+            customEventBannerListener.onBannerFailed( MoPubErrorCode.ADAPTER_CONFIGURATION_ERROR );
             return;
         }
-
-        mContext = (Activity) context;
 
         Log.d( TAG, "Requesting AppLovin banner with serverExtras: " + serverExtras );
 
@@ -63,114 +51,79 @@ public class AppLovinBannerAdapter
         {
             final AppLovinSdk sdk = AppLovinSdk.getInstance( context );
             sdk.setPluginVersion( "MoPubBanner-1.0" );
-            sdk.getAdService().loadNextAd( adSize, this );
+
+
+            final AppLovinAdView adView = new AppLovinAdView( adSize, (Activity) context );
+            adView.setAdLoadListener( new AppLovinAdLoadListener()
+            {
+                @Override
+                public void adReceived(final AppLovinAd ad)
+                {
+                    Log.d( TAG, "Successfully loaded banner ad" );
+                }
+
+                @Override
+                public void failedToReceiveAd(final int errorCode)
+                {
+                    Log.e( TAG, "Failed to load banner ad with code: " + errorCode );
+
+                    if ( errorCode == AppLovinErrorCodes.NO_FILL )
+                    {
+                        customEventBannerListener.onBannerFailed( MoPubErrorCode.NETWORK_NO_FILL );
+                    }
+                    else if ( errorCode >= 500 )
+                    {
+                        customEventBannerListener.onBannerFailed( MoPubErrorCode.SERVER_ERROR );
+                    }
+                    else if ( errorCode < 0 )
+                    {
+                        customEventBannerListener.onBannerFailed( MoPubErrorCode.INTERNAL_ERROR );
+                    }
+                    else
+                    {
+                        customEventBannerListener.onBannerFailed( MoPubErrorCode.UNSPECIFIED );
+                    }
+                }
+            } );
+            adView.setAdDisplayListener( new AppLovinAdDisplayListener()
+            {
+                @Override
+                public void adDisplayed(final AppLovinAd ad)
+                {
+                    Log.d( TAG, "Banner displayed" );
+                }
+
+                @Override
+                public void adHidden(final AppLovinAd ad)
+                {
+                    Log.d( TAG, "Banner dismissed" );
+                }
+            } );
+            adView.setAdClickListener( new AppLovinAdClickListener()
+            {
+                @Override
+                public void adClicked(final AppLovinAd ad)
+                {
+                    Log.d( TAG, "Banner clicked" );
+
+                    customEventBannerListener.onBannerClicked();
+                    customEventBannerListener.onLeaveApplication();
+                }
+            } );
+            adView.loadNextAd();
+
+            customEventBannerListener.onBannerLoaded( adView );
         }
         else
         {
             Log.e( TAG, "Unable to request AppLovin banner" );
-            handleBannerFailure( MoPubErrorCode.ADAPTER_CONFIGURATION_ERROR );
+
+            customEventBannerListener.onBannerFailed( MoPubErrorCode.ADAPTER_CONFIGURATION_ERROR );
         }
-    }
-
-    //
-    // AppLovin Ad Load Listener
-    //
-
-    @Override
-    public void adReceived(final AppLovinAd ad)
-    {
-        Log.d( TAG, "Successfully loaded banner ad" );
-
-        final Handler uiThreadHandler = new Handler( Looper.getMainLooper() );
-        uiThreadHandler.post( new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                mAdView = new AppLovinAdView( ad.getSize(), mContext );
-                mAdView.setAdDisplayListener( new AppLovinAdDisplayListener()
-                {
-                    @Override
-                    public void adDisplayed(final AppLovinAd ad)
-                    {
-                        Log.d( TAG, "Banner displayed" );
-                    }
-
-                    @Override
-                    public void adHidden(final AppLovinAd ad)
-                    {
-                        Log.d( TAG, "Banner dismissed" );
-                    }
-                } );
-                mAdView.setAdClickListener( new AppLovinAdClickListener()
-                {
-                    @Override
-                    public void adClicked(final AppLovinAd ad)
-                    {
-                        Log.d( TAG, "Banner clicked" );
-
-                        mListener.onBannerClicked();
-                        mListener.onLeaveApplication();
-                    }
-                } );
-
-                mAdView.renderAd( ad );
-                mListener.onBannerLoaded( mAdView );
-            }
-        } );
     }
 
     @Override
-    public void failedToReceiveAd(final int errorCode)
-    {
-        Log.e( TAG, "Failed to load banner ad with code: " + errorCode );
-
-        if ( errorCode == AppLovinErrorCodes.NO_FILL )
-        {
-            handleBannerFailure( MoPubErrorCode.NETWORK_NO_FILL );
-        }
-        else if ( errorCode >= 500 )
-        {
-            handleBannerFailure( MoPubErrorCode.SERVER_ERROR );
-        }
-        else if ( errorCode < 0 )
-        {
-            handleBannerFailure( MoPubErrorCode.INTERNAL_ERROR );
-        }
-        else
-        {
-            handleBannerFailure( MoPubErrorCode.UNSPECIFIED );
-        }
-    }
-
-    //
-    // Cleanup
-    //
-
-    @Override
-    public void onInvalidate()
-    {
-        try
-        {
-            if ( mAdView != null )
-            {
-                Views.removeFromParent( mAdView );
-                mAdView.destroy();
-                mAdView = null;
-            }
-
-            mContext = null;
-            mListener = null;
-        }
-        catch ( Throwable th )
-        {
-            Log.e( TAG, "Unable to invalidate", th );
-        }
-    }
-
-    //
-    // Utility
-    //
+    protected void onInvalidate() { }
 
     private AppLovinAdSize appLovinAdSizeFromServerExtras(final Map<String, String> serverExtras)
     {
@@ -217,10 +170,5 @@ public class AppLovinBannerAdapter
         }
 
         return null;
-    }
-
-    private void handleBannerFailure(final MoPubErrorCode code)
-    {
-        mListener.onBannerFailed( code );
     }
 }
