@@ -6,8 +6,13 @@
 //
 //
 
+#if __has_include(<AppLovinSDK/AppLovinSDK.h>)
+    #import <AppLovinSDK/AppLovinSDK.h>
+#else
+    #import "ALAdView.h"
+#endif
+
 #import "AppLovinBannerCustomEvent.h"
-#import <AppLovinSDK/AppLovinSDK.h>
 #import "MPConstants.h"
 
 // Use the below import statements if not integrating our SDK as a first-class framework
