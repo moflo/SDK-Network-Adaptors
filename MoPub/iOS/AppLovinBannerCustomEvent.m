@@ -15,9 +15,6 @@
 #import "AppLovinBannerCustomEvent.h"
 #import "MPConstants.h"
 
-// Use the below import statements if not integrating our SDK as a first-class framework
-//#import "ALAdView.h"
-
 @interface AppLovinBannerCustomEvent()<ALAdLoadDelegate, ALAdDisplayDelegate>
 @end
 
