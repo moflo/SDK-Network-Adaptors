@@ -14,10 +14,6 @@
 //#import "ALAdView.h"
 
 @interface AppLovinBannerCustomEvent()<ALAdLoadDelegate, ALAdDisplayDelegate>
-
-@property (nonatomic, strong) ALAdView *adView;
-@property (nonatomic, assign) CGSize size;
-
 @end
 
 @implementation AppLovinBannerCustomEvent
@@ -35,10 +31,14 @@ static NSString *const kALMoPubMediationErrorDomain = @"com.applovin.sdk.mediati
     ALAdSize *adSize = [self appLovinAdSizeFromRequestedSize: size];
     if ( adSize )
     {
-        self.size = size;
-        
         [[ALSdk shared] setPluginVersion: @"MoPubBanner-1.0"];
-        [[ALSdk shared].adService loadNextAd: adSize andNotify: self];
+        
+        ALAdView *adView = [[ALAdView alloc] initWithFrame: CGRectMake(0.0f, 0.0f, size.width, size.height) size: adSize sdk: [ALSdk shared]];
+        adView.adLoadDelegate = self;
+        adView.adDisplayDelegate = self;
+        [adView loadNextAd];
+        
+        [self.delegate bannerCustomEvent: self didLoadAd: adView];
     }
     else
     {
@@ -54,27 +54,11 @@ static NSString *const kALMoPubMediationErrorDomain = @"com.applovin.sdk.mediati
     return NO;
 }
 
-#pragma mark - Dealloc
-
-- (void)dealloc
-{
-    self.adView = nil;
-}
-
 #pragma mark - AppLovin Ad Load Delegate
 
 - (void)adService:(ALAdService *)adService didLoadAd:(ALAd *)ad
 {
-    [self log: @"Banner did load ad"];
-    
-    self.adView = [[ALAdView alloc] initWithFrame: CGRectMake(0.0f, 0.0f, self.size.width, self.size.height)
-                                             size: ad.size
-                                              sdk: [ALSdk shared]];
-    self.adView.adLoadDelegate = self;
-    self.adView.adDisplayDelegate = self;
-
-    [self.adView render: ad];
-    [self.delegate bannerCustomEvent: self didLoadAd: self.adView];
+    [self log: @"Banner did load ad: %@", ad.adIdNumber];
 }
 
 - (void)adService:(ALAdService *)adService didFailToLoadAdWithError:(int)code
@@ -90,16 +74,12 @@ static NSString *const kALMoPubMediationErrorDomain = @"com.applovin.sdk.mediati
 - (void)ad:(ALAd *)ad wasDisplayedIn:(UIView *)view
 {
     [self log: @"Banner displayed"];
-    
     [self.delegate trackImpression];
-    [self.delegate bannerCustomEventWillBeginAction: self];
 }
 
 - (void)ad:(ALAd *)ad wasHiddenIn:(UIView *)view
 {
     [self log: @"Banner dismissed"];
-    
-    [self.delegate bannerCustomEventDidFinishAction: self];
 }
 
 - (void)ad:(ALAd *)ad wasClickedIn:(UIView *)view
