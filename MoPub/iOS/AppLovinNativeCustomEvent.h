@@ -2,16 +2,17 @@
 // AppLovin <--> MoPub Network Adaptors
 //
 
+#if __has_include(<AppLovinSDK/AppLovinSDK.h>)
+    #import <AppLovinSDK/AppLovinSDK.h>
+#else
+    #import "ALNativeAdLoadDelegate.h"
+    #import "ALNativeAdPrecacheDelegate.h"
+    #import "ALSdk.h"
+#endif
+
 #import "MPInterstitialCustomEvent.h"
 #import "MPNativeCustomEvent.h"
 #import "MPNativeAd.h"
-
-#import <AppLovinSDK/AppLovinSDK.h>
-
-// Use the below import statements if not integrating our SDK as a first-class framework
-//#import "ALNativeAdLoadDelegate.h"
-//#import "ALNativeAdPrecacheDelegate.h"
-
 #import "AppLovinNativeAdapter.h"
 
 @interface AppLovinNativeCustomEvent : MPNativeCustomEvent <ALNativeAdLoadDelegate>

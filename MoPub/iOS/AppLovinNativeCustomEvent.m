@@ -11,9 +11,6 @@
 #import "MPNativeCustomEvent.h"
 #import "MPNativeAdError.h"
 
-// Use the below import statements if not integrating our SDK as a first-class framework
-//#import "ALSdk.h"
-
 @implementation AppLovinNativeCustomEvent
 
 static NSString* const kALMoPubMediationErrorDomain = @"com.applovin.sdk.mediation.mopub.errorDomain";
