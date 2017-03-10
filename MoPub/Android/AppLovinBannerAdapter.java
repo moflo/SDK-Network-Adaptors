@@ -30,8 +30,8 @@ public class AppLovinBannerAdapter
 {
     private static final String TAG = "AppLovinBannerAdapter";
 
-    private static final String AD_WIDTH_KEY  = "adWidth";
-    private static final String AD_HEIGHT_KEY = "adHeight";
+    private static final String AD_WIDTH_KEY  = "com_mopub_ad_width";
+    private static final String AD_HEIGHT_KEY = "com_mopub_ad_height";
 
     @Override
     protected void loadBanner(final Context context, final CustomEventBannerListener customEventBannerListener, final Map<String, Object> localExtras, final Map<String, String> serverExtras)
@@ -44,14 +44,14 @@ public class AppLovinBannerAdapter
             return;
         }
 
-        Log.d( TAG, "Requesting AppLovin banner with serverExtras: " + serverExtras );
+        Log.d( TAG, "Requesting AppLovin banner with serverExtras: " + localExtras );
 
-        final AppLovinAdSize adSize = appLovinAdSizeFromServerExtras( serverExtras );
+        final AppLovinAdSize adSize = appLovinAdSizeFromServerExtras( localExtras );
         if ( adSize != null )
         {
             final AppLovinSdk sdk = AppLovinSdk.getInstance( context );
             sdk.setPluginVersion( "MoPubBanner-1.0" );
-            
+
             final AppLovinAdView adView = new AppLovinAdView( adSize, (Activity) context );
             adView.setAdLoadListener( new AppLovinAdLoadListener()
             {
@@ -124,21 +124,19 @@ public class AppLovinBannerAdapter
     @Override
     protected void onInvalidate() { }
 
-    private AppLovinAdSize appLovinAdSizeFromServerExtras(final Map<String, String> serverExtras)
+    private AppLovinAdSize appLovinAdSizeFromServerExtras(final Map<String, Object> serverExtras)
     {
         // Handle trivial case
         if ( serverExtras == null || serverExtras.isEmpty() )
         {
             Log.e( TAG, "No serverExtras provided" );
-
-            // Return BANNER by default
-            return AppLovinAdSize.BANNER;
+            return null;
         }
 
         try
         {
-            final int width = Integer.parseInt( serverExtras.get( AD_WIDTH_KEY ) );
-            final int height = Integer.parseInt( serverExtras.get( AD_HEIGHT_KEY ) );
+            final int width = (Integer) serverExtras.get( AD_WIDTH_KEY );
+            final int height = (Integer) serverExtras.get( AD_HEIGHT_KEY );
 
             // We have valid dimensions
             if ( width > 0 && height > 0 )
@@ -170,7 +168,6 @@ public class AppLovinBannerAdapter
             Log.e( TAG, "Encountered error while parsing width and height from serverExtras", th );
         }
 
-        // Return BANNER by default
-        return AppLovinAdSize.BANNER;
+        return null;
     }
 }
