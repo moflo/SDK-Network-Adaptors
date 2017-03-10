@@ -51,8 +51,7 @@ public class AppLovinBannerAdapter
         {
             final AppLovinSdk sdk = AppLovinSdk.getInstance( context );
             sdk.setPluginVersion( "MoPubBanner-1.0" );
-
-
+            
             final AppLovinAdView adView = new AppLovinAdView( adSize, (Activity) context );
             adView.setAdLoadListener( new AppLovinAdLoadListener()
             {
@@ -131,7 +130,9 @@ public class AppLovinBannerAdapter
         if ( serverExtras == null || serverExtras.isEmpty() )
         {
             Log.e( TAG, "No serverExtras provided" );
-            return null;
+
+            // Return BANNER by default
+            return AppLovinAdSize.BANNER;
         }
 
         try
@@ -169,6 +170,7 @@ public class AppLovinBannerAdapter
             Log.e( TAG, "Encountered error while parsing width and height from serverExtras", th );
         }
 
-        return null;
+        // Return BANNER by default
+        return AppLovinAdSize.BANNER;
     }
 }
