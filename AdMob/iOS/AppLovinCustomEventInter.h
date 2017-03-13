@@ -2,13 +2,15 @@
 // AppLovin <--> AdMob Network Adaptors
 //
 
+#if __has_include(<AppLovinSDK/AppLovinSDK.h>)
+    #import <AppLovinSDK/AppLovinSDK.h>
+#else
+    #import "ALAdService.h"
+    #import "ALInterstitialAd.h"
+#endif
+
 @import GoogleMobileAds;
 @import UIKit;
-@import AppLovinSDK;
-
-// Use the below import statements if not integrating our SDK as a first-class framework
-//#import "ALAdService.h"
-//#import "ALInterstitialAd.h"
 
 @interface AppLovinCustomEventInter : NSObject <GADCustomEventInterstitial, ALAdLoadDelegate, ALAdDisplayDelegate>
 

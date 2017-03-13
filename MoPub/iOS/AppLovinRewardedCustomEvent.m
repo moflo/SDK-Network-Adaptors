@@ -9,9 +9,6 @@
 #import "AppLovinRewardedCustomEvent.h"
 #import "MPRewardedVideoReward.h"
 
-// Use the below import statements if not integrating our SDK as a first-class framework
-//#import "ALIncentivizedInterstitialAd.h"
-
 static NSString *const kALMoPubMediationErrorDomain =
     @"com.applovin.sdk.mediation.mopub.errorDomain";
 static BOOL loggingEnabled = YES;

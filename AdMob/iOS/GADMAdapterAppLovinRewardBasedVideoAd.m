@@ -1,14 +1,15 @@
-#import <GoogleMobileAds/GoogleMobileAds.h> 
+#if __has_include(<AppLovinSDK/AppLovinSDK.h>)
+    #import <AppLovinSDK/AppLovinSDK.h>
+#else
+    #import "ALSdk.h"
+    #import "ALIncentivizedInterstitialAd.h"
+#endif
+
+#import <GoogleMobileAds/GoogleMobileAds.h>
 
 //  For some older versions of AdMob iOS SDK, you would also need to add the header files from the "Mediation Adapters" folder, coming with the SDK, into your Xcode project, and to use the import below
 //#import "GADMRewardBasedVideoAdNetworkConnectorProtocol.h"
 #import "GADMAdapterAppLovinRewardBasedVideoAd.h"
-
-@import AppLovinSDK;
-
-// Use the below import statements if not integrating our SDK as a first-class framework
-//#import "ALSdk.h"
-//#import "ALIncentivizedInterstitialAd.h"
 
 @interface GADMAdapterAppLovinRewardBasedVideoAd () <ALAdLoadDelegate, ALAdRewardDelegate, ALAdDisplayDelegate, ALAdVideoPlaybackDelegate>
 
