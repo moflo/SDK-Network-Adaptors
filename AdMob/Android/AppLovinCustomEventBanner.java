@@ -54,7 +54,7 @@ public final class AppLovinCustomEventBanner
             final AppLovinSdk sdk = AppLovinSdk.getInstance( context );
             sdk.setPluginVersion( "AdMobBanner-1.0" );
 
-            final AppLovinAdView adView = new AppLovinAdView( appLovinAdSize, (Activity) context );
+            adView = new AppLovinAdView( appLovinAdSize, (Activity) context );
             adView.setAdLoadListener( new AppLovinAdLoadListener()
             {
                 @Override
